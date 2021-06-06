@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +9,7 @@ namespace holonsoft.NoQBus.SignalR.Client
 {
 	public static class MessageBusSignalRClientConfigurationHelper
 	{
-		public static void AddSignalRClient(this ContainerBuilder containerBuilder)
+		public static void AddNoQSignalRClient(this ContainerBuilder containerBuilder)
 		{
 			containerBuilder
 				 .RegisterType<MessageBusSignalRClient>()
@@ -17,9 +19,16 @@ namespace holonsoft.NoQBus.SignalR.Client
 				 .SingleInstance();
 		}
 
-		public static Task StartSignalRClient(this IMessageBusConfig config,
-																					Action<IMessageBusSignalRClientConfig> configure,
-																					CancellationToken cancellationToken = default)
+		public static void AddNoQSignalRClient(this ServiceCollection serviceCollection)
+		{
+			serviceCollection.TryAddSingleton<MessageBusSignalRClient>();
+			serviceCollection.TryAddSingleton<IMessageBusSignalRClientConfig>(x => x.GetService<MessageBusSignalRClient>());
+			serviceCollection.TryAddSingleton<IMessageBusSink>(x => x.GetService<MessageBusSignalRClient>());
+		}
+
+		public static Task StartNoQSignalRClient(this IMessageBusConfig config,
+																						Action<IMessageBusSignalRClientConfig> configure,
+																						CancellationToken cancellationToken = default)
 		{
 			return
 				config

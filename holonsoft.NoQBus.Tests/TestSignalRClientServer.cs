@@ -19,10 +19,10 @@ namespace holonsoft.NoQBus.Tests
 				MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
 
 				IMessageBusConfig messageBusConfig = messageBusImplServer;
-				await messageBusConfig.StartSignalRHost(x => { }, cts.Token);
+				await messageBusConfig.StartNoQSignalRHost(x => { }, cts.Token);
 
 				messageBusConfig = messageBusImplClient;
-				await messageBusConfig.StartSignalRClient(x => { }, cts.Token);
+				await messageBusConfig.StartNoQSignalRClient(x => { }, cts.Token);
 
 				IMessageBus messageBusServer = messageBusImplServer;
 				IMessageBus messageBusClient = messageBusImplClient;
@@ -60,10 +60,10 @@ namespace holonsoft.NoQBus.Tests
 				MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
 
 				IMessageBusConfig messageBusConfig = messageBusImplServer;
-				await messageBusConfig.StartSignalRHost(x => { }, cts.Token);
+				await messageBusConfig.StartNoQSignalRHost(x => { }, cts.Token);
 
 				messageBusConfig = messageBusImplClient;
-				await messageBusConfig.StartSignalRClient(x => { }, cts.Token);
+				await messageBusConfig.StartNoQSignalRClient(x => { }, cts.Token);
 
 				IMessageBus messageBusServer = messageBusImplServer;
 				IMessageBus messageBusClient = messageBusImplClient;
@@ -100,7 +100,7 @@ namespace holonsoft.NoQBus.Tests
 				MessageBus messageBusImplServer = new(new MessageBusSignalRHost());
 
 				IMessageBusConfig messageBusConfig = messageBusImplServer;
-				await messageBusConfig.StartSignalRHost(x => { }, cts.Token);
+				await messageBusConfig.StartNoQSignalRHost(x => { }, cts.Token);
 
 				IMessageBus messageBusServer = messageBusImplServer;
 
