@@ -1,4 +1,5 @@
-﻿using holonsoft.Utils;
+﻿using holonsoft.FluentConditions;
+using holonsoft.Utils;
 using System;
 using System.Linq;
 using System.Text;
@@ -50,6 +51,8 @@ namespace holonsoft.NoQBus
 			{
 				if (ReflectionUtils.AllNonAbstractTypes.TryGetValue(entry.TypeName, out Type responseType))
 				{
+					responseType.Requires(nameof(responseType)).IsOfType<IResponse>();
+
 					return (IResponse) JsonSerializer.Deserialize(_encoding.GetString(entry.SerializedRequestMessage), responseType, _serializerOptions);
 				}
 				throw new InvalidOperationException($"Could not deserialize type {entry.TypeName} - type not found!");
@@ -60,6 +63,8 @@ namespace holonsoft.NoQBus
 		{
 			if (ReflectionUtils.AllNonAbstractTypes.TryGetValue(request.TypeName, out Type requestType))
 			{
+				requestType.Requires(nameof(requestType)).IsOfType<IRequest>();
+
 				var deserializedRequest = (IRequest) JsonSerializer.Deserialize(_encoding.GetString(request.SerializedRequestMessage), requestType, _serializerOptions);
 				var responses = await EnsureMessageBus().GetResponsesForRemotedRequest(deserializedRequest);
 				return new SinkTransportDataResponse(request, responses.Select(SerializeEntry).ToArray());
