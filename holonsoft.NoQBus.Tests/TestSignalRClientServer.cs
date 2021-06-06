@@ -37,7 +37,7 @@ namespace holonsoft.NoQBus.Tests
 
 				TestRequest sendRequest = new();
 
-				TestResponse[] receivedResponse = await messageBusClient.GetResponses<TestRequest, TestResponse>(sendRequest);
+				TestResponse[] receivedResponse = await messageBusClient.GetResponses<TestResponse>(sendRequest);
 
 				receivedResponse.Should().HaveCount(1);
 
@@ -78,7 +78,7 @@ namespace holonsoft.NoQBus.Tests
 
 				TestRequest sendRequest = new();
 
-				TestResponse[] receivedResponse = await messageBusServer.GetResponses<TestRequest, TestResponse>(sendRequest);
+				TestResponse[] receivedResponse = await messageBusServer.GetResponses<TestResponse>(sendRequest);
 
 				receivedResponse.Should().HaveCount(1);
 
@@ -106,7 +106,7 @@ namespace holonsoft.NoQBus.Tests
 
 				TestRequest sendRequest = new();
 
-				TestResponse[] receivedResponse = await messageBusServer.GetResponses<TestRequest, TestResponse>(sendRequest);
+				TestResponse[] receivedResponse = await messageBusServer.GetResponses<TestResponse>(sendRequest);
 
 				receivedResponse.Should().HaveCount(0);
 			}

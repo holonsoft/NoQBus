@@ -28,7 +28,7 @@ namespace holonsoft.NoQBus.Tests
 
 			TestRequest sendRequest = new();
 
-			TestResponse[] receivedResponse = await messageBus.GetResponses<TestRequest, TestResponse>(sendRequest);
+			TestResponse[] receivedResponse = await messageBus.GetResponses<TestResponse>(sendRequest);
 
 			receivedResponse.Should().HaveCount(1);
 
