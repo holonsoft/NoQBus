@@ -4,20 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace holonsoft.NoQBus
 {
-	public class MessageBusSink : IMessageBusSink
+	public abstract class MessageBusSinkBase : IMessageBusSink
 	{
-		protected IMessageBusSinkTransport _transport;
-		private readonly IRemoteMessageBus _messageBus;
-
-		public MessageBusSink(IMessageBusSinkTransport transport, IRemoteMessageBus messageBus)
+		private IRemoteMessageBus _messageBus;
+		public void SetMessageBus(IRemoteMessageBus messageBus)
 		{
-			_transport = transport;
-			_messageBus = messageBus;
+			_messageBus = _messageBus == null ? messageBus : throw new NotSupportedException($"MessageBus for the {nameof(MessageBusSinkBase)} is already set!");
 		}
+		protected IRemoteMessageBus EnsureMessageBus()
+			 => _messageBus ?? throw new NotSupportedException($"MessageBus for the {nameof(MessageBusSinkBase)} is not set!");
 
 		private readonly JsonSerializerOptions _serializerOptions
 			 = new()
@@ -32,10 +32,14 @@ namespace holonsoft.NoQBus
 
 		private readonly Encoding _encoding = Encoding.UTF8;
 
+		public abstract Task StartAsync(CancellationToken cancellationToken = default);
+
+		public abstract Task<SinkTransportDataResponse> TransportToEndpoint(SinkTransportDataRequest request);
+
 		public async Task<IResponse[]> GetResponses(IRequest request)
 		{
 			byte[] serializedRequest = _encoding.GetBytes(JsonSerializer.Serialize(request, request.GetType(), _serializerOptions));
-			var response = await _transport.TransportToEndpoint(new SinkTransportDataRequest(request.GetType().FullName, serializedRequest));
+			var response = await TransportToEndpoint(new SinkTransportDataRequest(request.GetType().FullName, serializedRequest));
 			return
 				 response.ResponseEntries
 								 .AsParallel()
@@ -57,7 +61,7 @@ namespace holonsoft.NoQBus
 			if (ReflectionUtils.AllNonAbstractTypes.TryGetValue(request.TypeName, out Type requestType))
 			{
 				var deserializedRequest = (IRequest) JsonSerializer.Deserialize(_encoding.GetString(request.SerializedRequestMessage), requestType, _serializerOptions);
-				var responses = await _messageBus.GetResponsesForRemotedRequest(deserializedRequest);
+				var responses = await EnsureMessageBus().GetResponsesForRemotedRequest(deserializedRequest);
 				return new SinkTransportDataResponse(request, responses.Select(SerializeEntry).ToArray());
 
 			}

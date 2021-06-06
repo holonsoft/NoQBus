@@ -9,21 +9,16 @@ namespace holonsoft.NoQBus
 
 	public partial class MessageBus
 	{
-		private const int _defaultTimeoutSeconds = 300;
+		private readonly ConcurrentDictionary<Type, ConcurrentDictionary<Guid, Func<IRequest, Task<IResponse>>>> _subscriptionsByType = new();
+		private readonly ConcurrentDictionary<Guid, (Type Type, Func<IRequest, Task<IResponse>> ActionDelegate)> _subscriptionsByGuid = new();
+		private readonly IMessageBusSink _messageSink;
 
-		private readonly ConcurrentDictionary<Type, ConcurrentDictionary<Guid, Func<IRequest, Task<IResponse>>>> _subscriptionsByType;
-		private readonly ConcurrentDictionary<Guid, (Type Type, Func<IRequest, Task<IResponse>> ActionDelegate)> _subscriptionsByGuid;
+		private TimeSpan _timeOutTimeSpan = TimeSpan.FromSeconds(300);
+		private bool _isServer = true;
 
-		private TimeSpan _timeOutTimeSpan;
-		private IMessageBusSink _messageSink;
-		private bool _isServer;
-
-		public MessageBus()
+		public MessageBus(IMessageBusSink messageSink = null)
 		{
-			_subscriptionsByType = new ConcurrentDictionary<Type, ConcurrentDictionary<Guid, Func<IRequest, Task<IResponse>>>>();
-			_subscriptionsByGuid = new ConcurrentDictionary<Guid, (Type Type, Func<IRequest, Task<IResponse>> ActionDelegate)>();
-
-			_timeOutTimeSpan = TimeSpan.FromSeconds(_defaultTimeoutSeconds);
+			_messageSink = messageSink;
 		}
 
 		public Task<Guid> Subscribe<TRequest>(Func<TRequest, Task> action) where TRequest : IRequest
@@ -74,20 +69,20 @@ namespace holonsoft.NoQBus
 			if (isRemoteCall)
 				return Array.Empty<IResponse>();
 
-			if (requestType.GetCustomAttribute<DenyRemotingAttribute>(false) != null)
-				throw new RemotingDeniedException($"Messages of type {requestType.Name} must not be remoted!");
-
 			if (_messageSink != null)
 			{
+				if (requestType.GetCustomAttribute<DenyRemotingAttribute>(false) != null)
+					throw new RemotingDeniedException($"Messages of type {requestType.Name} must not be remoted!");
+
 				var result = await _messageSink.GetResponses(request);
 				if (result.Length != 0)
 					return result;
 			}
 
-			if (!_isServer)
-				throw new NobodyListeningException($"Nobody is listening for messages of type {requestType.Name}");
+			if (_isServer)
+				return Array.Empty<IResponse>();
 
-			return Array.Empty<IResponse>();
+			throw new NobodyListeningException($"Nobody is listening for messages of type {requestType.Name}");
 		}
 
 		private async Task<IResponse[]> HandleLocalSubscriptions(IRequest request, ConcurrentDictionary<Guid, Func<IRequest, Task<IResponse>>> subscriptions)

@@ -1,37 +1,20 @@
 using FluentAssertions;
-using holonsoft.NoQBus;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace NoQBus.Tests
+namespace holonsoft.NoQBus.Tests
 {
-	public class UnitTest1
+	public partial class TestLocal
 	{
-		public record TestResponse : ResponseBase<TestRequest>
-		{
-			public string TestString { get; init; }
-
-			public TestResponse()
-			{
-			}
-
-			public TestResponse(TestRequest cloneFromRequest, string testString) : base(cloneFromRequest)
-			{
-				TestString = testString;
-			}
-		}
-		public record TestRequest : RequestBase<TestResponse> { }
-
 		[Fact]
 		public async void TestSimpleLocalMessage()
 		{
 			MessageBus messageBusImpl = new();
 
 			IMessageBusConfig messageBusConfig = messageBusImpl;
-			messageBusConfig
-				.Configure()
-				.ConfigureForLocalUse()
-				.Build();
+			await messageBusConfig
+							.Configure()
+							.StartAsync();
 
 			IMessageBus messageBus = messageBusImpl;
 

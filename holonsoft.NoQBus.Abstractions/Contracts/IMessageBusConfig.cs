@@ -1,9 +1,9 @@
 ﻿namespace holonsoft.NoQBus
 {
 
-   public interface IMessageBusConfig
+	public interface IMessageBusConfig
 
-   {
-      public IMessageBusConfigure Configure();
-   }
+	{
+		public IMessageBusConfigure Configure();
+	}
 }

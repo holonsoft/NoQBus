@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\holonsoft.NoQBus.Abstractions\holonsoft.NoQBus.Abstractions.csproj" />
+    <ProjectReference Include="..\holonsoft.NoQBus.SignalR.Abstractions\holonsoft.NoQBus.SignalR.Abstractions.csproj" />
+    <ProjectReference Include="..\holonsoft.NoQBus.SignalR.Client\holonsoft.NoQBus.SignalR.Client.csproj" />
+    <ProjectReference Include="..\holonsoft.NoQBus.SignalR.Host\holonsoft.NoQBus.SignalR.Host.csproj" />
     <ProjectReference Include="..\holonsoft.NoQBus\holonsoft.NoQBus.csproj" />
   </ItemGroup>
 
