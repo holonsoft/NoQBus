@@ -74,3 +74,35 @@ public record MyResponse : ResponseBase<MyRequest> {
   public string OneOfMyProps { get; init; }
 }
 ```
+
+### Starting the Messagebus
+#### Only local
+
+``` c#
+diContainerBuilder.AddNoQMessageBus(); //or servicecollection
+//after building the container:
+diContainer.Resolve<IMessageBusConfig>().StartLocalNoQMessageBus();
+//from now on you can use:
+_messageBus = diContainer.Resolve<IMessageBus>();
+```
+
+
+#### SignalR server
+``` c#
+diContainerBuilder.AddNoQMessageBus(); //or servicecollection
+diContainerBuilder.AddNoQSignalRHost(); //or servicecollection
+//after building the container:
+diContainer.Resolve<IMessageBusConfig>().StartNoQSignalRHost(x => x.UseUrl("http://localhost:5001"));
+//from now on you can use:
+_messageBus = diContainer.Resolve<IMessageBus>();
+```
+
+#### SignalR client
+``` c#
+diContainerBuilder.AddNoQMessageBus(); //or servicecollection
+diContainerBuilder.AddNoQSignalRClient(); //or servicecollection
+//after building the container:
+diContainer.Resolve<IMessageBusConfig>().StartNoQSignalRClient(x => x.UseUrl("http://localhost:5001"));
+//from now on you can use:
+_messageBus = diContainer.Resolve<IMessageBus>();
+```
