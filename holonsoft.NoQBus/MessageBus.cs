@@ -1,4 +1,5 @@
-﻿using System;
+﻿using holonsoft.FluentConditions;
+using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
@@ -22,15 +23,21 @@ namespace holonsoft.NoQBus
 		}
 
 		public Task<Guid> Subscribe<TRequest>(Func<TRequest, Task> action) where TRequest : IRequest
-			 => Subscribe<TRequest, VoidResponse>(x =>
-			 {
-				 _ = action(x).ConfigureAwait(false);
-				 return Task.FromResult(VoidResponse.Instance);
-			 });
+		{
+			action.Requires(nameof(action)).IsNotNull();
+
+			return Subscribe<TRequest, VoidResponse>(x =>
+				{
+					_ = action(x).ConfigureAwait(false);
+					return Task.FromResult(VoidResponse.Instance);
+				});
+		}
 
 		public Task<Guid> Subscribe<TRequest, TResponse>(Func<TRequest, Task<TResponse>> action) where TRequest : IRequest
 																																														 where TResponse : IResponse
 		{
+			action.Requires(nameof(action)).IsNotNull();
+
 			Guid subscriptionId = Guid.NewGuid();
 
 			async Task<IResponse> subscriptionNonGeneric(IRequest x) => await action((TRequest) x);
@@ -61,6 +68,8 @@ namespace holonsoft.NoQBus
 		{
 			EnsureConfigured();
 
+			request.Requires(nameof(request)).IsNotNull();
+
 			Type requestType = request.GetType();
 
 			if (_subscriptionsByType.TryGetValue(requestType, out var subscriptions))
@@ -87,6 +96,12 @@ namespace holonsoft.NoQBus
 
 		private async Task<IResponse[]> HandleLocalSubscriptions(IRequest request, ConcurrentDictionary<Guid, Func<IRequest, Task<IResponse>>> subscriptions)
 		{
+			request.Requires(nameof(request)).IsNotNull();
+			subscriptions.Requires(nameof(request)).IsNotNull();
+
+			if (subscriptions.Values.Count == 0)
+				return Array.Empty<IResponse>();
+
 			var resultingTasks =
 								 subscriptions.Values
 															.Select(x => x(request))
