@@ -75,17 +75,14 @@ namespace holonsoft.NoQBus.SignalR.Host
 			uriBuilder.Fragment = "";
 
 			var host = new HostBuilder()
-								 .ConfigureServices(services =>
-								 {
-									 services.AddSingleton(_stateStore);
-									 services.AddSingleton(this);
-								 })
 								 .ConfigureWebHostDefaults(webBuilder =>
 								 {
 									 webBuilder.UseUrls(uriBuilder.ToString());
 
 									 webBuilder.ConfigureServices(services =>
 									 {
+										 services.AddSingleton(_stateStore);
+										 services.AddSingleton(this);
 										 services.AddSignalR(o => o.EnableDetailedErrors = true);
 									 });
 
