@@ -52,7 +52,7 @@ namespace holonsoft.NoQBus.Tests
 				MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
 
 				IMessageBusConfig messageBusConfig = messageBusImplClient;
-				await messageBusConfig.StartNoQSignalRClient(cancellationToken: cts.Token);
+				await messageBusConfig.StartNoQSignalRClient(x => x.UseUrl("http://localhost:5001/NoQ/SignalR"), cancellationToken: cts.Token);
 
 				IMessageBus messageBusServer = messageBusImplServer;
 				IMessageBus messageBusClient = messageBusImplClient;
