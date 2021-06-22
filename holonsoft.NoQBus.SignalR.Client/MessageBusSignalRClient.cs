@@ -69,9 +69,15 @@ namespace holonsoft.NoQBus.SignalR.Client
 		public async ValueTask DisposeAsync()
 		{
 			GC.SuppressFinalize(this);
-			await _connection.StopAsync();
 			_connectionSpoke.Dispose();
-			await _connection.DisposeAsync();
+			try
+			{
+				//when in an container it could be that this was already disposed
+				await _connection.StopAsync();
+				await _connection.DisposeAsync();
+
+			}
+			catch (Exception) { }
 		}
 
 		private class RetryPolicy : IRetryPolicy

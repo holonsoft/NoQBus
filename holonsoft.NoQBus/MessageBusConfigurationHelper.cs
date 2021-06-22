@@ -18,7 +18,7 @@ namespace holonsoft.NoQBus
 				 .SingleInstance();
 		}
 
-		public static void AddNoQMessageBus(this ServiceCollection serviceCollection)
+		public static void AddNoQMessageBus(this IServiceCollection serviceCollection)
 		{
 			serviceCollection.TryAddSingleton<MessageBus>();
 			serviceCollection.TryAddSingleton<IMessageBus>(x => x.GetService<MessageBus>());
@@ -32,8 +32,16 @@ namespace holonsoft.NoQBus
 			return
 				config
 					.Configure()
-					.AsServer()
+					.DontThrowIfNoReceiverSubscribed()
 					.StartAsync(cancellationToken);
 		}
+
+		public static Task StartLocalNoQMessageBus(this ILifetimeScope lifetimeScope,
+																							 CancellationToken cancellationToken = default)
+			=> lifetimeScope.Resolve<IMessageBusConfig>().StartLocalNoQMessageBus(cancellationToken);
+
+		public static Task StartLocalNoQMessageBus(this ServiceProvider serviceProvider,
+																							 CancellationToken cancellationToken = default)
+			=> serviceProvider.GetRequiredService<IMessageBusConfig>().StartLocalNoQMessageBus(cancellationToken);
 	}
 }

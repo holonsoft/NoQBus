@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using holonsoft.NoQBus.SignalR.Client;
 using holonsoft.NoQBus.SignalR.Host;
+using holonsoft.NoQBus.Tests.TestDtoClasses;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -15,14 +16,14 @@ namespace holonsoft.NoQBus.Tests
 			CancellationTokenSource cts = new();
 			try
 			{
-				MessageBus messageBusImplServer = new(new MessageBusSignalRHost());
+				MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
 				MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
 
 				IMessageBusConfig messageBusConfig = messageBusImplServer;
-				await messageBusConfig.StartNoQSignalRHost(x => { }, cts.Token);
+				await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);
 
 				messageBusConfig = messageBusImplClient;
-				await messageBusConfig.StartNoQSignalRClient(x => { }, cts.Token);
+				await messageBusConfig.StartNoQSignalRClient(cancellationToken: cts.Token);
 
 				IMessageBus messageBusServer = messageBusImplServer;
 				IMessageBus messageBusClient = messageBusImplClient;
@@ -56,14 +57,14 @@ namespace holonsoft.NoQBus.Tests
 			CancellationTokenSource cts = new();
 			try
 			{
-				MessageBus messageBusImplServer = new(new MessageBusSignalRHost());
+				MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
 				MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
 
 				IMessageBusConfig messageBusConfig = messageBusImplServer;
-				await messageBusConfig.StartNoQSignalRHost(x => { }, cts.Token);
+				await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);
 
 				messageBusConfig = messageBusImplClient;
-				await messageBusConfig.StartNoQSignalRClient(x => { }, cts.Token);
+				await messageBusConfig.StartNoQSignalRClient(cancellationToken: cts.Token);
 
 				IMessageBus messageBusServer = messageBusImplServer;
 				IMessageBus messageBusClient = messageBusImplClient;
@@ -97,10 +98,10 @@ namespace holonsoft.NoQBus.Tests
 			CancellationTokenSource cts = new();
 			try
 			{
-				MessageBus messageBusImplServer = new(new MessageBusSignalRHost());
+				MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
 
 				IMessageBusConfig messageBusConfig = messageBusImplServer;
-				await messageBusConfig.StartNoQSignalRHost(x => { }, cts.Token);
+				await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);
 
 				IMessageBus messageBusServer = messageBusImplServer;
 

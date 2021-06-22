@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 
 namespace holonsoft.NoQBus
 {
-
 	public partial class MessageBus : IMessageBusConfig, IMessageBusConfigure, IMessageBusConfigured
 	{
 		private bool _isConfigured;
@@ -24,15 +23,15 @@ namespace holonsoft.NoQBus
 			return this;
 		}
 
-		IMessageBusConfigure IMessageBusConfigure.AsClient()
+		IMessageBusConfigure IMessageBusConfigure.ThrowIfNoReceiverSubscribed()
 		{
-			_isServer = false;
+			_throwIfNoReceiverSubscribed = true;
 			return this;
 		}
 
-		IMessageBusConfigure IMessageBusConfigure.AsServer()
+		IMessageBusConfigure IMessageBusConfigure.DontThrowIfNoReceiverSubscribed()
 		{
-			_isServer = true;
+			_throwIfNoReceiverSubscribed = false;
 			return this;
 		}
 

@@ -1,4 +1,4 @@
-﻿namespace holonsoft.NoQBus.Tests
+﻿namespace holonsoft.NoQBus.Tests.TestDtoClasses
 {
 	public record TestRequest : RequestBase<TestResponse> { }
 	public record TestResponse : ResponseBase<TestRequest>

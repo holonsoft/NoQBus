@@ -13,13 +13,13 @@ namespace holonsoft.NoQBus.SignalR.Client
 		{
 			containerBuilder
 				 .RegisterType<MessageBusSignalRClient>()
-				 .As<MessageBusSignalRClient>()
+				 .AsSelf()
 				 .As<IMessageBusSignalRClientConfig>()
 				 .As<IMessageBusSink>()
 				 .SingleInstance();
 		}
 
-		public static void AddNoQSignalRClient(this ServiceCollection serviceCollection)
+		public static void AddNoQSignalRClient(this IServiceCollection serviceCollection)
 		{
 			serviceCollection.TryAddSingleton<MessageBusSignalRClient>();
 			serviceCollection.TryAddSingleton<IMessageBusSignalRClientConfig>(x => x.GetService<MessageBusSignalRClient>());
@@ -27,15 +27,40 @@ namespace holonsoft.NoQBus.SignalR.Client
 		}
 
 		public static Task StartNoQSignalRClient(this IMessageBusConfig config,
-																						Action<IMessageBusSignalRClientConfig> configure,
-																						CancellationToken cancellationToken = default)
+																						 Action<IMessageBusSignalRClientConfig> configure = null,
+																						 CancellationToken cancellationToken = default)
 		{
 			return
 				config
 					.Configure()
-					.AsClient()
-					.ConfigureSink(x => configure((IMessageBusSignalRClientConfig) x))
+					.ThrowIfNoReceiverSubscribed()
+					.ConfigureSink(x => configure?.Invoke((IMessageBusSignalRClientConfig) x))
 					.StartAsync(cancellationToken);
 		}
+
+		public static Task StartNoQSignalRClient(this IMessageBusConfig config,
+																						 string url,
+																						 CancellationToken cancellationToken = default)
+			=> StartNoQSignalRClient(config, x => x.UseUrl(url), cancellationToken);
+
+		public static Task StartNoQSignalRClient(this ILifetimeScope lifetimeScope,
+																						 Action<IMessageBusSignalRClientConfig> configure = null,
+																						 CancellationToken cancellationToken = default)
+			=> lifetimeScope.Resolve<IMessageBusConfig>().StartNoQSignalRClient(configure, cancellationToken);
+
+		public static Task StartNoQSignalRClient(this ILifetimeScope lifetimeScope,
+																						 string url,
+																						 CancellationToken cancellationToken = default)
+			=> lifetimeScope.Resolve<IMessageBusConfig>().StartNoQSignalRClient(url, cancellationToken);
+
+		public static Task StartNoQSignalRClient(this ServiceProvider serviceProvider,
+																						 Action<IMessageBusSignalRClientConfig> configure = null,
+																						 CancellationToken cancellationToken = default)
+			=> serviceProvider.GetRequiredService<IMessageBusConfig>().StartNoQSignalRClient(configure, cancellationToken);
+
+		public static Task StartNoQSignalRClient(this ServiceProvider serviceProvider,
+																						 string url,
+																						 CancellationToken cancellationToken = default)
+			=> serviceProvider.GetRequiredService<IMessageBusConfig>().StartNoQSignalRClient(url, cancellationToken);
 	}
 }

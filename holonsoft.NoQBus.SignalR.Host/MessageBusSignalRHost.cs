@@ -12,7 +12,7 @@ namespace holonsoft.NoQBus.SignalR.Host
 {
 	public partial class MessageBusSignalRHost : MessageBusSinkBase
 	{
-		private readonly MessageBusSignalRHubStateStore _stateStore = new();
+		private readonly MessageBusSignalRHubStateStore _stateStore;
 
 		private IHubContext<MessageBusSignalRHub, IMessageBusSignalRClient> _hubContext;
 		public void SetHubContext(IHubContext<MessageBusSignalRHub, IMessageBusSignalRClient> hubContext)
@@ -23,6 +23,10 @@ namespace holonsoft.NoQBus.SignalR.Host
 			 => _hubContext ?? throw new NotSupportedException($"HubContext for the {nameof(MessageBusSignalRHost)} is not set!");
 
 		public string Url { get; private set; } = MessageBusSignalRConstants.DefaultUrl;
+		public bool ExistingAspNetCoreHost { get; set; }
+
+		public MessageBusSignalRHost(MessageBusSignalRHubStateStore stateStore)
+			=> _stateStore = stateStore;
 
 		public async override Task<SinkTransportDataResponse> TransportToEndpoint(SinkTransportDataRequest request)
 		{
@@ -69,46 +73,50 @@ namespace holonsoft.NoQBus.SignalR.Host
 
 		public override async Task StartAsync(CancellationToken cancellationToken = default)
 		{
-			UriBuilder uriBuilder = new(Url);
-			uriBuilder.Path = "";
-			uriBuilder.Query = "";
-			uriBuilder.Fragment = "";
-
-			var host = new HostBuilder()
-								 .ConfigureWebHostDefaults(webBuilder =>
-								 {
-									 webBuilder.UseUrls(uriBuilder.ToString());
-
-									 webBuilder.ConfigureServices(services =>
-									 {
-										 services.AddSingleton(_stateStore);
-										 services.AddSingleton(this);
-										 services.AddSignalR(o => o.EnableDetailedErrors = true);
-									 });
-
-									 webBuilder.Configure(app =>
-									 {
-										 SetHubContext(app.ApplicationServices.GetRequiredService<IHubContext<MessageBusSignalRHub, IMessageBusSignalRClient>>());
-
-										 app.UseRouting();
-
-										 app.UseEndpoints(endpoints =>
-										 {
-											 endpoints.MapHub<MessageBusSignalRHub>(new UriBuilder(Url).Path);
-										 });
-									 });
-								 })
-								 .Build();
-
-			await host.StartAsync(cancellationToken);
-
-			async Task WaitForShutdownAndDispose()
+			if (!ExistingAspNetCoreHost)
 			{
-				await host.WaitForShutdownAsync(cancellationToken);
-				host.Dispose();
-			}
+				UriBuilder uriBuilder = new(Url);
+				uriBuilder.Path = "";
+				uriBuilder.Query = "";
+				uriBuilder.Fragment = "";
 
-			_ = WaitForShutdownAndDispose();
+				var host = new HostBuilder()
+									 .ConfigureWebHostDefaults(webBuilder =>
+									 {
+										 webBuilder.UseUrls(uriBuilder.ToString());
+
+										 webBuilder.ConfigureServices(services =>
+										 {
+											 services.AddSingleton(_stateStore);
+											 services.AddSingleton(this);
+											 services.AddSignalR(o => o.EnableDetailedErrors = true);
+										 });
+
+										 webBuilder.Configure(app =>
+										 {
+											 app.UseNoQSignalRHost();
+
+											 app.UseRouting();
+
+											 app.UseEndpoints(endpoints =>
+											 {
+												 endpoints.MapNoQSignalRHost(new UriBuilder(Url).Path);
+											 });
+										 });
+									 })
+									 .Build();
+
+				await host.StartAsync(cancellationToken);
+
+				async Task WaitForShutdownAndDispose()
+				{
+					await host.WaitForShutdownAsync(cancellationToken);
+					await host.StopAsync(CancellationToken.None);
+					host.Dispose();
+				}
+
+				_ = WaitForShutdownAndDispose();
+			}
 		}
 	}
 }

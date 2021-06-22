@@ -15,7 +15,7 @@ namespace holonsoft.NoQBus
 		private readonly IMessageBusSink _messageSink;
 
 		private TimeSpan _timeOutTimeSpan = TimeSpan.FromSeconds(300);
-		private bool _isServer = true;
+		private bool _throwIfNoReceiverSubscribed = true;
 
 		public MessageBus(IMessageBusSink messageSink = null)
 		{
@@ -42,7 +42,7 @@ namespace holonsoft.NoQBus
 
 			async Task<IResponse> subscriptionNonGeneric(IRequest x) => await action((TRequest) x);
 
-			_subscriptionsByGuid.GetOrAdd(subscriptionId, (typeof(TRequest), (Func<IRequest, Task<IResponse>>) subscriptionNonGeneric));
+			_subscriptionsByGuid.GetOrAdd(subscriptionId, (typeof(TRequest), subscriptionNonGeneric));
 			_subscriptionsByType.GetOrAdd(typeof(TRequest), x => new ConcurrentDictionary<Guid, Func<IRequest, Task<IResponse>>>())
 													.GetOrAdd(subscriptionId, subscriptionNonGeneric);
 
@@ -88,10 +88,10 @@ namespace holonsoft.NoQBus
 					return result;
 			}
 
-			if (_isServer)
-				return Array.Empty<IResponse>();
+			if (_throwIfNoReceiverSubscribed)
+				throw new NobodyListeningException($"Nobody is listening for messages of type {requestType.Name}");
 
-			throw new NobodyListeningException($"Nobody is listening for messages of type {requestType.Name}");
+			return Array.Empty<IResponse>();
 		}
 
 		private async Task<IResponse[]> HandleLocalSubscriptions(IRequest request, ConcurrentDictionary<Guid, Func<IRequest, Task<IResponse>>> subscriptions)
@@ -110,7 +110,7 @@ namespace holonsoft.NoQBus
 			Task timeoutTask = Task.Delay(_timeOutTimeSpan);
 			Task<IResponse[]> resultTask = Task.WhenAll(resultingTasks);
 			await Task.WhenAny(timeoutTask, resultTask);
-			if (timeoutTask.IsCompleted)
+			if (!resultTask.IsCompleted && timeoutTask.IsCompleted)
 				throw new BusTimeOutException($"Timed out processing message of type {request.GetType().Name}");
 
 			return resultTask.Result;
