@@ -14,7 +14,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryType>GIT</RepositoryType>
     <PackageId>holonsoft.NoQBus</PackageId>
-    <PackageTags>;holonsoft;noqbus;messagebus;net5;netcore3.1;netcoreapp3.1;net472;net48;netstandard2.0</PackageTags>
+    <PackageTags>;holonsoft;noqbus;messagebus;net5</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
