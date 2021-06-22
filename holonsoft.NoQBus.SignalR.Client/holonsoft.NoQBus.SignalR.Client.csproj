@@ -1,7 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <Authors>Alexander Bülow, Christian Vogt</Authors>
+    <Company>holonsoft</Company>
+    <PackageProjectUrl>https://www.nuget.org/packages/holonsoft.NoQBus.SignalR.Client/</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Copyright>holonsoft</Copyright>
+    <Description>Client part for the SignalR bridge of our asynchronous, fast and fully parallelized message bus.</Description>
+    <RepositoryUrl>https://github.com/holonsoft/NoQBus</RepositoryUrl>
+    <Version>1.0.0.0</Version>
+    <TargetFrameworks>net5.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryType>GIT</RepositoryType>
+    <PackageId>holonsoft.NoQBus.SignalR.Client</PackageId>
+    <PackageTags>#holonsoft#noqbus#messagebus#net5#netcore3.1#netcoreapp3.1#net472#net48#netstandard2.0</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,9 +25,16 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.7" />
     <PackageReference Include="SignalR.Strong" Version="0.3.0" />
     <PackageReference Include="SignalR.Strong.Dynamic" Version="0.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  
 </Project>

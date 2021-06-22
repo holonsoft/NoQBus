@@ -92,7 +92,7 @@ _messageBus = diContainer.Resolve<IMessageBus>();
 diContainerBuilder.AddNoQMessageBus(); //or servicecollection
 diContainerBuilder.AddNoQSignalRHost(); //or servicecollection
 //after building the container:
-diContainer.Resolve<IMessageBusConfig>().StartNoQSignalRHost(x => x.UseUrl("http://localhost:5001"));
+await diContainer.StartNoQSignalRHost(x => x.UseUrl("http://localhost:5001"));
 //from now on you can use:
 _messageBus = diContainer.Resolve<IMessageBus>();
 ```
@@ -102,7 +102,7 @@ _messageBus = diContainer.Resolve<IMessageBus>();
 diContainerBuilder.AddNoQMessageBus(); //or servicecollection
 diContainerBuilder.AddNoQSignalRClient(); //or servicecollection
 //after building the container:
-diContainer.Resolve<IMessageBusConfig>().StartNoQSignalRClient(x => x.UseUrl("http://localhost:5001"));
+await diContainer.StartNoQSignalRClient(x => x.UseUrl("http://localhost:5001"));
 //from now on you can use:
 _messageBus = diContainer.Resolve<IMessageBus>();
 ```

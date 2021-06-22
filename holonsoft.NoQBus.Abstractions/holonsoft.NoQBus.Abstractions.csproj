@@ -1,7 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <Authors>Alexander Bülow, Christian Vogt</Authors>
+    <Company>holonsoft</Company>
+    <PackageProjectUrl>https://www.nuget.org/packages/holonsoft.NoQBus.Abstractions/</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Copyright>holonsoft</Copyright>
+    <Description>Abstractions for our asynchronous, fast and fully parallelized message bus.</Description>
+    <RepositoryUrl>https://github.com/holonsoft/NoQBus</RepositoryUrl>
+    <Version>1.0.0.0</Version>
+    <TargetFrameworks>net5.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryType>GIT</RepositoryType>
+    <PackageId>holonsoft.NoQBus.Abstractions</PackageId>
+    <PackageTags>#holonsoft#noqbus#messagebus#net5#netcore3.1#netcoreapp3.1#net472#net48#netstandard2.0</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  
 </Project>

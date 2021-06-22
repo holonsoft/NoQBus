@@ -73,7 +73,7 @@ namespace holonsoft.NoQBus.SignalR.Host
 		}
 
 		public static Task StartNoQSignalRHost(this ILifetimeScope lifetimeScope,
-																						Action<IMessageBusSignalRHostConfig> configure = default,
+																					 Action<IMessageBusSignalRHostConfig> configure = default,
 																					 CancellationToken cancellationToken = default)
 			=> lifetimeScope.Resolve<IMessageBusConfig>().StartNoQSignalRHost(configure, cancellationToken);
 
