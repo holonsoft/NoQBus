@@ -1,7 +1,8 @@
-﻿using System.Threading;
+﻿using holonsoft.NoQBus.Abstractions.Models;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace holonsoft.NoQBus
+namespace holonsoft.NoQBus.Abstractions.Contracts
 {
 	public interface IMessageBusSink
 	{

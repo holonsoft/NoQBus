@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace holonsoft.NoQBus
+namespace holonsoft.NoQBus.Abstractions.Contracts
 {
    public interface IRemoteMessageBus
    {

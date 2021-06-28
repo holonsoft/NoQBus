@@ -1,4 +1,4 @@
-﻿namespace holonsoft.NoQBus
+﻿namespace holonsoft.NoQBus.Abstractions.Models
 {
 	public record VoidResponse : ResponseBase
 	{

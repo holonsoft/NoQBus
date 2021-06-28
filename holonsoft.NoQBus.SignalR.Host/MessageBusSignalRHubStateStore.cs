@@ -1,4 +1,5 @@
-﻿using System;
+﻿using holonsoft.NoQBus.Abstractions.Models;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;

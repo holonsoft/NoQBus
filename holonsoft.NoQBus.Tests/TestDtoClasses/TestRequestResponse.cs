@@ -1,4 +1,6 @@
-﻿namespace holonsoft.NoQBus.Tests.TestDtoClasses
+﻿using holonsoft.NoQBus.Abstractions.Models;
+
+namespace holonsoft.NoQBus.Tests.TestDtoClasses
 {
 	public record TestRequest : RequestBase<TestResponse> { }
 	public record TestResponse : ResponseBase<TestRequest>

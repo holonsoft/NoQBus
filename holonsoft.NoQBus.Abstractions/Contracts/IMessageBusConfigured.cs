@@ -1,4 +1,4 @@
-namespace holonsoft.NoQBus
+namespace holonsoft.NoQBus.Abstractions.Contracts
 {
 
 	public interface IMessageBusConfigured

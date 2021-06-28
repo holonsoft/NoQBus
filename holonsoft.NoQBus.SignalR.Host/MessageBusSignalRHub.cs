@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using holonsoft.NoQBus.Abstractions.Contracts;
+using holonsoft.NoQBus.Abstractions.Models;
+using holonsoft.NoQBus.SignalR.Abstractions.Contracts;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading.Tasks;
 

@@ -1,4 +1,6 @@
 ﻿using holonsoft.FluentConditions;
+using holonsoft.NoQBus.Abstractions.Contracts;
+using holonsoft.NoQBus.Abstractions.Models;
 using holonsoft.NoQBus.PolymorphyHelper;
 using holonsoft.Utils;
 using System;

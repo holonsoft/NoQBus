@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using holonsoft.NoQBus.Abstractions.Models;
+using holonsoft.NoQBus.SignalR.Abstractions;
+using holonsoft.NoQBus.SignalR.Abstractions.Contracts;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +31,7 @@ namespace holonsoft.NoQBus.SignalR.Host
 		public MessageBusSignalRHost(MessageBusSignalRHubStateStore stateStore)
 			=> _stateStore = stateStore;
 
-		public async override Task<SinkTransportDataResponse> TransportToEndpoint(SinkTransportDataRequest request)
+		public override async Task<SinkTransportDataResponse> TransportToEndpoint(SinkTransportDataRequest request)
 		{
 			var hubContext = EnsureHubContext();
 

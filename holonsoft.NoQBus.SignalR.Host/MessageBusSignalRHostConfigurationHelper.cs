@@ -1,4 +1,6 @@
 ﻿using Autofac;
+using holonsoft.NoQBus.Abstractions.Contracts;
+using holonsoft.NoQBus.SignalR.Abstractions.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.SignalR;
