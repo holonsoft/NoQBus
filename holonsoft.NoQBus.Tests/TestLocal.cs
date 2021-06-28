@@ -1,4 +1,5 @@
 using FluentAssertions;
+using holonsoft.NoQBus.Abstractions.Contracts;
 using holonsoft.NoQBus.Tests.TestDtoClasses;
 using System.Threading.Tasks;
 using Xunit;

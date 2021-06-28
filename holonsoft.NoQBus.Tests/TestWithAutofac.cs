@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using FluentAssertions;
+using holonsoft.NoQBus.Abstractions.Contracts;
 using holonsoft.NoQBus.SignalR.Client;
 using holonsoft.NoQBus.SignalR.Host;
 using holonsoft.NoQBus.Tests.TestDtoClasses;

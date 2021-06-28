@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace holonsoft.NoQBus
+namespace holonsoft.NoQBus.Abstractions.Attributes
 {
    [AttributeUsage(AttributeTargets.Class)]
    public class DenyRemotingAttribute : Attribute

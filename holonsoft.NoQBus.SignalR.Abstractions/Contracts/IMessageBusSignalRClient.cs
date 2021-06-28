@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using holonsoft.NoQBus.Abstractions.Models;
+using System.Threading.Tasks;
 
-namespace holonsoft.NoQBus.SignalR
+namespace holonsoft.NoQBus.SignalR.Abstractions.Contracts
 {
    public interface IMessageBusSignalRClient
    {

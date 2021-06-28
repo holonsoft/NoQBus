@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using holonsoft.NoQBus.Abstractions.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;

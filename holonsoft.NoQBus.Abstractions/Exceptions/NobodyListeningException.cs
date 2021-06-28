@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace holonsoft.NoQBus
+namespace holonsoft.NoQBus.Abstractions.Exceptions
 {
    public class NobodyListeningException : Exception
    {

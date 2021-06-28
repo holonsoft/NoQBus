@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace holonsoft.NoQBus.SignalR
+namespace holonsoft.NoQBus.SignalR.Abstractions
 {
 	public class MessageBusSignalRConstants
 	{

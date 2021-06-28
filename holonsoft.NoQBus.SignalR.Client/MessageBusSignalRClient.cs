@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using holonsoft.NoQBus.Abstractions.Exceptions;
+using holonsoft.NoQBus.Abstractions.Models;
+using holonsoft.NoQBus.SignalR.Abstractions;
+using holonsoft.NoQBus.SignalR.Abstractions.Contracts;
+using Microsoft.AspNetCore.SignalR.Client;
 using SignalR.Strong;
 using System;
 using System.Threading;
