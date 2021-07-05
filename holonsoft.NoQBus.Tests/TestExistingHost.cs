@@ -20,6 +20,7 @@ namespace holonsoft.NoQBus.Tests
 		public async void TestMessageSendFromClientToServerWithExistingHost()
 		{
 			CancellationTokenSource cts = new();
+
 			var host = new HostBuilder()
 				.ConfigureWebHostDefaults(webBuilder =>
 				{
@@ -43,6 +44,7 @@ namespace holonsoft.NoQBus.Tests
 					});
 				})
 				.Build();
+
 			try
 			{
 				await host.StartAsync(cts.Token);
