@@ -9,7 +9,7 @@
     <Description>Asynchronous, fast and fully parallelized message bus.</Description>
     <RepositoryUrl>https://github.com/holonsoft/NoQBus</RepositoryUrl>
     <Version>1.2.1</Version>
-    <TargetFrameworks>netcoreapp3.1;net5.0;netstandard2.1</TargetFrameworks>
+    <TargetFramework>net5.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryType>GIT</RepositoryType>

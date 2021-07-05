@@ -5,11 +5,11 @@ namespace holonsoft.NoQBus.Abstractions.Models
 
 	public abstract record RequestBase : MessageBase, IRequest
 	{
-		protected RequestBase() : base()
+		public RequestBase() : base()
 		{
 		}
 
-		protected RequestBase(IMessage cloneFromMessage) : base(cloneFromMessage)
+		public RequestBase(IMessage cloneFromMessage) : base(cloneFromMessage)
 		{
 		}
 	}

@@ -29,7 +29,7 @@ namespace holonsoft.NoQBus.Abstractions.Models
 
 		private static readonly string _globalSenderId = Guid.NewGuid().ToString();
 
-		protected MessageBase()
+		public MessageBase()
 		{
 			Culture = System.Globalization.CultureInfo.CurrentUICulture.Name; //e.g. en-US, de-DE
 			SenderId = _globalSenderId;
@@ -38,7 +38,7 @@ namespace holonsoft.NoQBus.Abstractions.Models
 			CreationTimeStamp = DateTime.UtcNow;
 		}
 
-		protected MessageBase(IMessage cloneFromMessage)
+		public MessageBase(IMessage cloneFromMessage)
 		{
 			Culture = cloneFromMessage.Culture;
 			SenderId = cloneFromMessage.SenderId;

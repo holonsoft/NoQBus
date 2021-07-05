@@ -13,11 +13,11 @@ namespace holonsoft.NoQBus.Abstractions.Models
 #endif
 
 
-		protected ResponseBase()
+		public ResponseBase()
 		{
 		}
 
-		protected ResponseBase(IMessage cloneFromMessage) : base(cloneFromMessage)
+		public ResponseBase(IMessage cloneFromMessage) : base(cloneFromMessage)
 		{
 			CorrospondingRequestMessageId = cloneFromMessage.MessageId;
 		}
@@ -25,11 +25,11 @@ namespace holonsoft.NoQBus.Abstractions.Models
 
 	public abstract record ResponseBase<TRequest> : ResponseBase, IResponse<TRequest> where TRequest : IRequest
 	{
-		protected ResponseBase()
+		public ResponseBase()
 		{
 		}
 
-		protected ResponseBase(TRequest cloneFromRequest) : base(cloneFromRequest)
+		public ResponseBase(TRequest cloneFromRequest) : base(cloneFromRequest)
 		{
 		}
 	}
