@@ -16,6 +16,7 @@ namespace holonsoft.NoQBus
 				 .As<IMessageBus>()
 				 .As<IMessageBusConfig>()
 				 .As<IRemoteMessageBus>()
+				 .As<IMessageBusFiltering>()
 				 .SingleInstance();
 		}
 
@@ -25,6 +26,7 @@ namespace holonsoft.NoQBus
 			serviceCollection.TryAddSingleton<IMessageBus>(x => x.GetService<MessageBus>());
 			serviceCollection.TryAddSingleton<IMessageBusConfig>(x => x.GetService<MessageBus>());
 			serviceCollection.TryAddSingleton<IRemoteMessageBus>(x => x.GetService<MessageBus>());
+			serviceCollection.TryAddSingleton<IMessageBusFiltering>(x => x.GetService<MessageBus>());
 		}
 
 		public static Task StartLocalNoQMessageBus(this IMessageBusConfig config,

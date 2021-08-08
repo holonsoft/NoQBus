@@ -70,11 +70,21 @@ namespace holonsoft.NoQBus
 
 		private async Task<IResponse[]> GetResponses(IRequest request, bool isRemoteCall = false)
 		{
+			if (!await HandleRequestFilterInternal(request))
+				return Array.Empty<IResponse>();
+
+			var responses = await GetResponsesInternal(request, isRemoteCall);
+
+			return await HandleResponseFilterInternal(responses.Where(x => x is not VoidResponse));
+		}
+
+		private async Task<IResponse[]> GetResponsesInternal(IRequest request, bool isRemoteCall)
+		{
 			EnsureConfigured();
 
 			request.Requires(nameof(request)).IsNotNull();
 
-			Type requestType = request.GetType();
+			var requestType = request.GetType();
 
 			if (_subscriptionsByType.TryGetValue(requestType, out var subscriptions))
 				return await HandleLocalSubscriptions(request, subscriptions);
@@ -97,6 +107,8 @@ namespace holonsoft.NoQBus
 
 			return Array.Empty<IResponse>();
 		}
+
+
 
 		private async Task<IResponse[]> HandleLocalSubscriptions(IRequest request, ConcurrentDictionary<Guid, Func<IRequest, Task<IResponse>>> subscriptions)
 		{

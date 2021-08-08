@@ -5,27 +5,15 @@ namespace holonsoft.NoQBus.Abstractions.Models
 {
 	public abstract record MessageBase : IMessage
 	{
-#if NET5_0_OR_GREATER
 		public string Culture { get; init; }
 
 		public string SenderId { get; init; }
 
 		public Guid MessageId { get; init; }
 
-		public string AuthToken { get; init; }
+		public string SessionId { get; init; }
 
 		public DateTime CreationTimeStamp { get; init; }
-#else
-		public string Culture { get; set; }
-
-		public string SenderId { get; set; }
-
-		public Guid MessageId { get; set; }
-
-		public string AuthToken { get; set; }
-
-		public DateTime CreationTimeStamp { get; set; }
-#endif
 
 		private static readonly string _globalSenderId = Guid.NewGuid().ToString();
 
@@ -34,7 +22,7 @@ namespace holonsoft.NoQBus.Abstractions.Models
 			Culture = System.Globalization.CultureInfo.CurrentUICulture.Name; //e.g. en-US, de-DE
 			SenderId = _globalSenderId;
 			MessageId = Guid.NewGuid();
-			AuthToken = "";
+			SessionId = "";
 			CreationTimeStamp = DateTime.UtcNow;
 		}
 
@@ -43,7 +31,7 @@ namespace holonsoft.NoQBus.Abstractions.Models
 			Culture = cloneFromMessage.Culture;
 			SenderId = cloneFromMessage.SenderId;
 			MessageId = Guid.NewGuid();
-			AuthToken = cloneFromMessage.AuthToken;
+			SessionId = cloneFromMessage.SessionId;
 			CreationTimeStamp = DateTime.UtcNow;
 		}
 	}
