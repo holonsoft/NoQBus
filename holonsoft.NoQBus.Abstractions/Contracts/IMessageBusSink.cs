@@ -19,14 +19,14 @@ namespace holonsoft.NoQBus.Abstractions.Contracts
 		/// Start remoting
 		/// </summary>
 		/// <param name="cancellationToken">a cancellationtoken to interrupt processing</param>
-		/// <returns></returns>
+		/// <returns>A simple task</returns>
 		public Task StartAsync(CancellationToken cancellationToken = default);
 
 		/// <summary>
 		/// Get an array of responses after sending a request to an endpoint
 		/// </summary>
 		/// <param name="request">Request message</param>
-		/// <returns>An array of responses, <see cref="IResponse"/></returns>
+		/// <returns>A task with an array of responses, <see cref="IResponse"/></returns>
 		public Task<IResponse[]> GetResponses(IRequest request);
 
 		/// <summary>
