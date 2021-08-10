@@ -22,7 +22,7 @@ namespace holonsoft.NoQBus
 		Task<IResponse[]> IMessageBus.GetResponses(IRequest request)
 			 => GetResponses(request);
 
-		Task<IResponse[]> IRemoteMessageBus.GetResponsesForRemotedRequest(IRequest request)
+		Task<IResponse[]> IRemoteMessageBus.GetResponsesForRemoteRequest(IRequest request)
 			 => GetResponses(request, isRemoteCall: true);
 
 		Task<Guid> IMessageBusFiltering.AddRequestFilter<TRequest>(Func<TRequest, Task<bool>> filter)

@@ -36,7 +36,7 @@ namespace holonsoft.NoQBus.Tests
 
 			receivedResponse.Should().HaveCount(1);
 
-			receivedResponse[0].CorrospondingRequestMessageId.Should().Be(sendRequest.MessageId);
+			receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
 			receivedResponse[0].TestString.Should().Be(testString);
 		}
 
@@ -78,7 +78,7 @@ namespace holonsoft.NoQBus.Tests
 
 				receivedResponse.Should().HaveCount(1);
 
-				receivedResponse[0].CorrospondingRequestMessageId.Should().Be(sendRequest.MessageId);
+				receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
 				receivedResponse[0].TestString.Should().Be(testString);
 			}
 			finally

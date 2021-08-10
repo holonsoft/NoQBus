@@ -3,28 +3,53 @@ using System;
 
 namespace holonsoft.NoQBus.Abstractions.Models
 {
-
+	/// <summary>
+	/// Base record structure for a response
+	/// </summary>
 	public abstract record ResponseBase : MessageBase, IResponse
 	{
-		public Guid CorrospondingRequestMessageId { get; init; }
+		/// <summary>
+		/// Weak relation between request and response
+		/// </summary>
+		public Guid CorrespondingRequestMessageId { get; init; }
 
-		public ResponseBase()
+		/// <summary>
+		/// Standard constructor
+		/// </summary>
+		protected ResponseBase()
 		{
 		}
 
-		public ResponseBase(IMessage cloneFromMessage) : base(cloneFromMessage)
+		/// <summary>
+		/// Create a response based on basic request infos
+		/// </summary>
+		/// <param name="cloneFromMessageButNewTimestampAndGuid"></param>
+		protected ResponseBase(IMessage cloneFromMessageButNewTimestampAndGuid) 
+			: base(cloneFromMessageButNewTimestampAndGuid)
 		{
-			CorrospondingRequestMessageId = cloneFromMessage.MessageId;
+			CorrespondingRequestMessageId = cloneFromMessageButNewTimestampAndGuid.MessageId;
 		}
 	}
 
-	public abstract record ResponseBase<TRequest> : ResponseBase, IResponse<TRequest> where TRequest : IRequest
+	/// <summary>
+	/// Base record structure for a response
+	/// </summary>
+	public abstract record ResponseBase<TRequest> : ResponseBase, IResponse<TRequest> 
+		where TRequest : IRequest
 	{
-		public ResponseBase()
+		/// <summary>
+		/// Standard constructor
+		/// </summary>
+		protected ResponseBase()
 		{
 		}
 
-		public ResponseBase(TRequest cloneFromRequest) : base(cloneFromRequest)
+		/// <summary>
+		/// Create a response based on basic request infos
+		/// </summary>
+		/// <param name="cloneFromMessageButNewTimestampAndGuid"></param>
+		protected ResponseBase(TRequest cloneFromMessageButNewTimestampAndGuid) 
+			: base(cloneFromMessageButNewTimestampAndGuid)
 		{
 		}
 	}

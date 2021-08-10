@@ -47,7 +47,7 @@ namespace holonsoft.NoQBus.Tests
 
 			receivedResponse.Should().HaveCount(1);
 
-			receivedResponse[0].CorrospondingRequestMessageId.Should().Be(sendRequest.MessageId);
+			receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
 			receivedResponse[0].TestString.Should().Be(testString);
 		}
 
@@ -81,7 +81,7 @@ namespace holonsoft.NoQBus.Tests
 
 			receivedResponse.Should().HaveCount(1);
 
-			receivedResponse[0].CorrospondingRequestMessageId.Should().Be(sendRequest.MessageId);
+			receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
 			receivedResponse[0].TestString.Should().Be(testString);
 
 			var requestFilterId2 = await messageBusFiltering.AddRequestFilter<TestRequest>(x => Task.FromResult(false));
@@ -100,7 +100,7 @@ namespace holonsoft.NoQBus.Tests
 
 			receivedResponse.Should().HaveCount(1);
 
-			receivedResponse[0].CorrospondingRequestMessageId.Should().Be(sendRequest.MessageId);
+			receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
 			receivedResponse[0].TestString.Should().Be(testString);
 		}
 
@@ -142,7 +142,7 @@ namespace holonsoft.NoQBus.Tests
 
 			receivedResponse.Should().HaveCount(1);
 
-			receivedResponse[0].CorrospondingRequestMessageId.Should().Be(sendRequest.MessageId);
+			receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
 			receivedResponse[0].TestString.Should().Be(testString);
 		}
 
@@ -176,7 +176,7 @@ namespace holonsoft.NoQBus.Tests
 
 			receivedResponse.Should().HaveCount(1);
 
-			receivedResponse[0].CorrospondingRequestMessageId.Should().Be(sendRequest.MessageId);
+			receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
 			receivedResponse[0].TestString.Should().Be(testString);
 
 			var responseFilterId2 = await messageBusFiltering.AddResponseFilter<TestResponse>(x => Task.FromResult(x.Where(z => false)));
@@ -195,7 +195,7 @@ namespace holonsoft.NoQBus.Tests
 
 			receivedResponse.Should().HaveCount(1);
 
-			receivedResponse[0].CorrospondingRequestMessageId.Should().Be(sendRequest.MessageId);
+			receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
 			receivedResponse[0].TestString.Should().Be(testString);
 		}
 	}

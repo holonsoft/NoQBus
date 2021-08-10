@@ -7,7 +7,8 @@ namespace holonsoft.NoQBus.Abstractions.Contracts
 		public Task<bool> Filter(IRequest request);
 	}
 
-	public interface IRequestFilter<TRequest> where TRequest : IRequest
+	public interface IRequestFilter<in TRequest> 
+		where TRequest : IRequest
 	{
 		public Task<bool> Filter(TRequest request);
 	}

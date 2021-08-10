@@ -31,7 +31,7 @@ namespace holonsoft.NoQBus.SignalR.Host
 		}
 
 		public Task<SinkTransportDataResponse> ProcessMessage(SinkTransportDataRequest request)
-				=> _host.GetResponsesForRemotedRequest(request);
+				=> _host.GetResponsesForRemoteRequest(request);
 
 		public Task<bool> ReceiveResponse(SinkTransportDataResponse response)
 		{

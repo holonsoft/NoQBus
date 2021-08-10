@@ -69,7 +69,7 @@ namespace holonsoft.NoQBus.SignalR.Host
 			return
 				config
 					.Configure()
-					.DontThrowIfNoReceiverSubscribed()
+					.DoNotThrowIfNoReceiverSubscribed()
 					.ConfigureSink(x => configure?.Invoke((IMessageBusSignalRHostConfig) x))
 					.StartAsync(cancellationToken);
 		}

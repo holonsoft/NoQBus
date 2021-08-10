@@ -2,25 +2,53 @@
 
 namespace holonsoft.NoQBus.Abstractions.Models
 {
-
+	/// <summary>
+	/// Base record structure for a request
+	/// </summary>
 	public abstract record RequestBase : MessageBase, IRequest
 	{
-		public RequestBase() : base()
+		/// <summary>
+		/// Standard constructor
+		/// </summary>
+		protected RequestBase() 
+			: base()
 		{
 		}
 
-		public RequestBase(IMessage cloneFromMessage) : base(cloneFromMessage)
+		/// <summary>
+		/// Constructor that partial clones some data from a given message.
+		/// Timestamp and message ID will not be cloned but set with new values
+		/// </summary>
+		/// <param name="cloneFromMessageButNewTimestampAndGuid"></param>
+		protected RequestBase(IMessage cloneFromMessageButNewTimestampAndGuid) 
+			: base(cloneFromMessageButNewTimestampAndGuid)
 		{
 		}
 	}
 
-	public abstract record RequestBase<TResponse> : RequestBase, IRequest<TResponse> where TResponse : IResponse
+
+	/// <summary>
+	/// Base record structure for a request
+	/// </summary>
+	public abstract record RequestBase<TResponse> : RequestBase, IRequest<TResponse> 
+		where TResponse : IResponse
 	{
-		public RequestBase() : base()
+		/// <summary>
+		/// Standard constructor
+		/// </summary>
+		protected RequestBase() 
+			: base()
 		{
 		}
 
-		public RequestBase(IMessage cloneFromMessage) : base(cloneFromMessage)
+
+		/// <summary>
+		/// Constructor that partial clones some data from a given message.
+		/// Timestamp and message ID will not be cloned but set with new values
+		/// </summary>
+		/// <param name="cloneFromMessageButNewTimestampAndGuid"></param>
+		protected RequestBase(IMessage cloneFromMessageButNewTimestampAndGuid) 
+			: base(cloneFromMessageButNewTimestampAndGuid)
 		{
 		}
 	}

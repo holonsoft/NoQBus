@@ -35,7 +35,7 @@ namespace holonsoft.NoQBus
 			return
 				config
 					.Configure()
-					.DontThrowIfNoReceiverSubscribed()
+					.DoNotThrowIfNoReceiverSubscribed()
 					.StartAsync(cancellationToken);
 		}
 

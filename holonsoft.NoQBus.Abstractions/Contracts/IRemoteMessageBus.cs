@@ -4,6 +4,6 @@ namespace holonsoft.NoQBus.Abstractions.Contracts
 {
    public interface IRemoteMessageBus
    {
-      public Task<IResponse[]> GetResponsesForRemotedRequest(IRequest request);
+      public Task<IResponse[]> GetResponsesForRemoteRequest(IRequest request);
    }
 }

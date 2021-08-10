@@ -63,14 +63,14 @@ namespace holonsoft.NoQBus
 			}
 		}
 
-		public async Task<SinkTransportDataResponse> GetResponsesForRemotedRequest(SinkTransportDataRequest request)
+		public async Task<SinkTransportDataResponse> GetResponsesForRemoteRequest(SinkTransportDataRequest request)
 		{
 			if (ReflectionUtils.AllNonAbstractTypes.TryGetValue(request.TypeName, out Type requestType))
 			{
 				requestType.Requires(nameof(requestType)).IsOfType<IRequest>();
 
 				var deserializedRequest = (IRequest) JsonSerializer.Deserialize(_encoding.GetString(request.SerializedRequestMessage), requestType, CreateSerializerOptions());
-				var responses = await EnsureMessageBus().GetResponsesForRemotedRequest(deserializedRequest);
+				var responses = await EnsureMessageBus().GetResponsesForRemoteRequest(deserializedRequest);
 				return new SinkTransportDataResponse(request, responses.Select(SerializeEntry).ToArray());
 
 			}

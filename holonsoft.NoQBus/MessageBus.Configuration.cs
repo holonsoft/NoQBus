@@ -9,14 +9,13 @@ namespace holonsoft.NoQBus
 	{
 		private bool _isConfigured;
 
-		private void EnsureConfigured()
-		{
-			if (!_isConfigured)
-				throw new NotSupportedException($"The {nameof(MessageBus)} is not configured!");
-		}
+		bool IMessageBusConfigured.IsConfigured => _isConfigured;
+
 
 		IMessageBusConfigure IMessageBusConfig.Configure()
-			 => _isConfigured ? throw new NotSupportedException($"More than one configuration for the {nameof(MessageBus)} is not supported") : this;
+			=> _isConfigured
+				? throw new NotSupportedException($"More than one configuration for the {nameof(MessageBus)} is not supported")
+				: this;
 
 		IMessageBusConfigure IMessageBusConfigure.SetTimeoutTimeSpan(TimeSpan timeOutTimeSpan)
 		{
@@ -30,7 +29,7 @@ namespace holonsoft.NoQBus
 			return this;
 		}
 
-		IMessageBusConfigure IMessageBusConfigure.DontThrowIfNoReceiverSubscribed()
+		IMessageBusConfigure IMessageBusConfigure.DoNotThrowIfNoReceiverSubscribed()
 		{
 			_throwIfNoReceiverSubscribed = false;
 			return this;
@@ -47,6 +46,13 @@ namespace holonsoft.NoQBus
 			_messageSink?.SetMessageBus(this);
 			await (_messageSink?.StartAsync(cancellationToken) ?? Task.CompletedTask);
 			_isConfigured = true;
+		}
+
+
+		private void EnsureConfigured()
+		{
+			if (!_isConfigured)
+				throw new NotSupportedException($"The {nameof(MessageBus)} is not configured!");
 		}
 	}
 

@@ -66,7 +66,7 @@ namespace holonsoft.NoQBus.SignalR.Client
 
 		async Task IMessageBusSignalRClient.ProcessMessage(SinkTransportDataRequest request)
 		{
-			var response = await GetResponsesForRemotedRequest(request);
+			var response = await GetResponsesForRemoteRequest(request);
 			await _typedHub.ReceiveResponse(response);
 		}
 
