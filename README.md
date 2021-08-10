@@ -8,6 +8,7 @@ It has
 - transparent client / server functionality
 - immutable records as messages
 - no serialization if a message stays on one side!
+- advanced filtering of requests or repsonses
 
 ## Samples
 
