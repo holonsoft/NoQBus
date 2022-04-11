@@ -1,7 +1,6 @@
-﻿namespace holonsoft.NoQBus.Tests.TestDtoClasses
+﻿namespace holonsoft.NoQBus.Tests.TestDtoClasses;
+
+public class TestInheritedB : TestBaseClass
 {
-	public class TestInheritedB : TestBaseClass
-	{
-		public double SomeFloat { get; set; }
-	}
+  public double SomeFloat { get; set; }
 }

@@ -8,13 +8,15 @@
     <Copyright>holonsoft</Copyright>
     <Description>Host part for the SignalR bridge of our asynchronous, fast and fully parallelized message bus.</Description>
     <RepositoryUrl>https://github.com/holonsoft/NoQBus</RepositoryUrl>
-    <Version>1.6.1</Version>
-    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+    <Version>1.7.0</Version>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DebugType>Embedded</DebugType>
     <RepositoryType>GIT</RepositoryType>
     <PackageId>holonsoft.NoQBus.SignalR.Host</PackageId>
-    <PackageTags>;holonsoft;noqbus;messagebus;net5</PackageTags>
+    <PackageTags>holonsoft;noqbus;messagebus;net6</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.2.0" />
-    <PackageReference Include="System.Text.Json" Version="5.0.2" />
+    <PackageReference Include="Autofac" Version="6.3.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>

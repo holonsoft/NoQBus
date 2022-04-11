@@ -1,12 +1,11 @@
-﻿namespace holonsoft.NoQBus.Abstractions.Models
-{
-	public record VoidResponse : ResponseBase
-	{
-		private record VoidMessage : MessageBase
-		{
-		}
+﻿namespace holonsoft.NoQBus.Abstractions.Models;
 
-		public static readonly VoidResponse Instance = new();
-		public VoidResponse() : base(new VoidMessage()) { }
-	}
+public record VoidResponse : ResponseBase
+{
+  private record VoidMessage : MessageBase
+  {
+  }
+
+  public static readonly VoidResponse Instance = new();
+  public VoidResponse() : base(new VoidMessage()) { }
 }

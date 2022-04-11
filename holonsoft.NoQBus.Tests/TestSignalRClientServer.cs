@@ -3,119 +3,110 @@ using holonsoft.NoQBus.Abstractions.Contracts;
 using holonsoft.NoQBus.SignalR.Client;
 using holonsoft.NoQBus.SignalR.Host;
 using holonsoft.NoQBus.Tests.TestDtoClasses;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace holonsoft.NoQBus.Tests
+namespace holonsoft.NoQBus.Tests;
+
+public class TestSignalRClientServer
 {
-	public class TestSignalRClientServer
-	{
-		[Fact]
-		public async void TestMessageSendFromClientToServer()
-		{
-			CancellationTokenSource cts = new();
-			try
-			{
-				MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
-				MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
+  [Fact]
+  public async void TestMessageSendFromClientToServer()
+  {
+    CancellationTokenSource cts = new();
+    try
+    {
+      MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
+      MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
 
-				IMessageBusConfig messageBusConfig = messageBusImplServer;
-				await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);
+      IMessageBusConfig messageBusConfig = messageBusImplServer;
+      await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);
 
-				messageBusConfig = messageBusImplClient;
-				await messageBusConfig.StartNoQSignalRClient(cancellationToken: cts.Token);
+      messageBusConfig = messageBusImplClient;
+      await messageBusConfig.StartNoQSignalRClient(cancellationToken: cts.Token);
 
-				IMessageBus messageBusServer = messageBusImplServer;
-				IMessageBus messageBusClient = messageBusImplClient;
+      IMessageBus messageBusServer = messageBusImplServer;
+      IMessageBus messageBusClient = messageBusImplClient;
 
-				const string testString = "Test4711";
-				static Task<TestResponse> ReceiveTestRequest(TestRequest request)
-				{
-					return Task.FromResult(new TestResponse(request, testString));
-				}
+      const string testString = "Test4711";
+      static Task<TestResponse> ReceiveTestRequest(TestRequest request) => Task.FromResult(new TestResponse(request, testString));
 
-				await messageBusServer.Subscribe<TestRequest, TestResponse>(ReceiveTestRequest);
+      await messageBusServer.Subscribe<TestRequest, TestResponse>(ReceiveTestRequest);
 
-				TestRequest sendRequest = new();
+      TestRequest sendRequest = new();
 
-				TestResponse[] receivedResponse = await messageBusClient.GetResponses<TestResponse>(sendRequest);
+      var receivedResponse = await messageBusClient.GetResponses<TestResponse>(sendRequest);
 
-				receivedResponse.Should().HaveCount(1);
+      receivedResponse.Should().HaveCount(1);
 
-				receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
-				receivedResponse[0].TestString.Should().Be(testString);
-			}
-			finally
-			{
-				cts.Cancel();
-			}
-		}
+      receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
+      receivedResponse[0].TestString.Should().Be(testString);
+    }
+    finally
+    {
+      cts.Cancel();
+    }
+  }
 
-		[Fact]
-		public async void TestMessageSendFromServerToClient()
-		{
-			CancellationTokenSource cts = new();
-			try
-			{
-				MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
-				MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
+  [Fact]
+  public async void TestMessageSendFromServerToClient()
+  {
+    CancellationTokenSource cts = new();
+    try
+    {
+      MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
+      MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
 
-				IMessageBusConfig messageBusConfig = messageBusImplServer;
-				await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);
+      IMessageBusConfig messageBusConfig = messageBusImplServer;
+      await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);
 
-				messageBusConfig = messageBusImplClient;
-				await messageBusConfig.StartNoQSignalRClient(cancellationToken: cts.Token);
+      messageBusConfig = messageBusImplClient;
+      await messageBusConfig.StartNoQSignalRClient(cancellationToken: cts.Token);
 
-				IMessageBus messageBusServer = messageBusImplServer;
-				IMessageBus messageBusClient = messageBusImplClient;
+      IMessageBus messageBusServer = messageBusImplServer;
+      IMessageBus messageBusClient = messageBusImplClient;
 
-				const string testString = "Test4711";
-				static Task<TestResponse> ReceiveTestRequest(TestRequest request)
-				{
-					return Task.FromResult(new TestResponse(request, testString));
-				}
+      const string testString = "Test4711";
+      static Task<TestResponse> ReceiveTestRequest(TestRequest request) => Task.FromResult(new TestResponse(request, testString));
 
-				await messageBusClient.Subscribe<TestRequest, TestResponse>(ReceiveTestRequest);
+      await messageBusClient.Subscribe<TestRequest, TestResponse>(ReceiveTestRequest);
 
-				TestRequest sendRequest = new();
+      TestRequest sendRequest = new();
 
-				TestResponse[] receivedResponse = await messageBusServer.GetResponses<TestResponse>(sendRequest);
+      var receivedResponse = await messageBusServer.GetResponses<TestResponse>(sendRequest);
 
-				receivedResponse.Should().HaveCount(1);
+      receivedResponse.Should().HaveCount(1);
 
-				receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
-				receivedResponse[0].TestString.Should().Be(testString);
-			}
-			finally
-			{
-				cts.Cancel();
-			}
-		}
+      receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
+      receivedResponse[0].TestString.Should().Be(testString);
+    }
+    finally
+    {
+      cts.Cancel();
+    }
+  }
 
-		[Fact]
-		public async void TestMessageSendFromServerButNoClientConnected()
-		{
-			CancellationTokenSource cts = new();
-			try
-			{
-				MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
+  [Fact]
+  public async void TestMessageSendFromServerButNoClientConnected()
+  {
+    CancellationTokenSource cts = new();
+    try
+    {
+      MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
 
-				IMessageBusConfig messageBusConfig = messageBusImplServer;
-				await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);
+      IMessageBusConfig messageBusConfig = messageBusImplServer;
+      await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);
 
-				IMessageBus messageBusServer = messageBusImplServer;
+      IMessageBus messageBusServer = messageBusImplServer;
 
-				TestRequest sendRequest = new();
+      TestRequest sendRequest = new();
 
-				TestResponse[] receivedResponse = await messageBusServer.GetResponses<TestResponse>(sendRequest);
+      var receivedResponse = await messageBusServer.GetResponses<TestResponse>(sendRequest);
 
-				receivedResponse.Should().HaveCount(0);
-			}
-			finally
-			{
-				cts.Cancel();
-			}
-		}
-	}
+      receivedResponse.Should().HaveCount(0);
+    }
+    finally
+    {
+      cts.Cancel();
+    }
+  }
 }

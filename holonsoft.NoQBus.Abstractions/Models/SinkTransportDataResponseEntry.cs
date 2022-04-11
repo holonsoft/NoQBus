@@ -1,16 +1,15 @@
-﻿namespace holonsoft.NoQBus.Abstractions.Models
+﻿namespace holonsoft.NoQBus.Abstractions.Models;
+
+public class SinkTransportDataResponseEntry
 {
-	public class SinkTransportDataResponseEntry
-	{
-		public string TypeName { get; init; }
-		public byte[] SerializedRequestMessage { get; init; }
+  public string TypeName { get; init; }
+  public byte[] SerializedRequestMessage { get; init; }
 
-		public SinkTransportDataResponseEntry() { } //for serializer
+  public SinkTransportDataResponseEntry() { } //for serializer
 
-		public SinkTransportDataResponseEntry(string typeName, byte[] serializedRequestMessage) : this()
-		{
-			TypeName = typeName;
-			SerializedRequestMessage = serializedRequestMessage;
-		}
-	}
+  public SinkTransportDataResponseEntry(string typeName, byte[] serializedRequestMessage) : this()
+  {
+    TypeName = typeName;
+    SerializedRequestMessage = serializedRequestMessage;
+  }
 }

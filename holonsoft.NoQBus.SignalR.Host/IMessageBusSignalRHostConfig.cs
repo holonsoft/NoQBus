@@ -1,7 +1,6 @@
-﻿namespace holonsoft.NoQBus.SignalR.Host
+﻿namespace holonsoft.NoQBus.SignalR.Host;
+
+public interface IMessageBusSignalRHostConfig
 {
-	public interface IMessageBusSignalRHostConfig
-	{
-		public IMessageBusSignalRHostConfig UseUrl(string url);
-	}
+  public IMessageBusSignalRHostConfig UseUrl(string url);
 }

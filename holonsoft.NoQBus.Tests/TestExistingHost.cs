@@ -7,81 +7,75 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 
-namespace holonsoft.NoQBus.Tests
+namespace holonsoft.NoQBus.Tests;
+
+public class TestExistingHost
 {
-	public class TestExistingHost
-	{
-		[Fact]
-		public async void TestMessageSendFromClientToServerWithExistingHost()
-		{
-			CancellationTokenSource cts = new();
+  [Fact]
+  public async void TestMessageSendFromClientToServerWithExistingHost()
+  {
+    CancellationTokenSource cts = new();
 
-			var host = new HostBuilder()
-				.ConfigureWebHostDefaults(webBuilder =>
-				{
-					webBuilder.UseUrls("http://localhost:5001");
+    var host = new HostBuilder()
+      .ConfigureWebHostDefaults(webBuilder =>
+      {
+        webBuilder.UseUrls("http://localhost:5001");
 
-					webBuilder.ConfigureServices(services =>
-					{
-						services.AddSignalR(o => o.EnableDetailedErrors = true);
-						services.AddNoQMessageBus();
-						services.AddNoQSignalRHost();
-					});
+        webBuilder.ConfigureServices(services =>
+        {
+          services.AddSignalR(o => o.EnableDetailedErrors = true);
+          services.AddNoQMessageBus();
+          services.AddNoQSignalRHost();
+        });
 
-					webBuilder.Configure(app =>
-					{
-						app.UseRouting();
+        webBuilder.Configure(app =>
+        {
+          app.UseRouting();
 
-						app.UseEndpoints(endpoints =>
-						{
-							endpoints.MapNoQSignalRHost("/NoQ/SignalR");
-						});
-					});
-				})
-				.Build();
+          app.UseEndpoints(endpoints =>
+          {
+            endpoints.MapNoQSignalRHost("/NoQ/SignalR");
+          });
+        });
+      })
+      .Build();
 
-			try
-			{
-				await host.StartAsync(cts.Token);
+    try
+    {
+      await host.StartAsync(cts.Token);
 
-				await host.StartNoQSignalRHostOnExistingAspNetCoreHost(cancellationToken: cts.Token);
+      await host.StartNoQSignalRHostOnExistingAspNetCoreHost(cancellationToken: cts.Token);
 
-				MessageBus messageBusImplServer = host.Services.GetRequiredService<MessageBus>();
-				MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
+      var messageBusImplServer = host.Services.GetRequiredService<MessageBus>();
+      MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
 
-				IMessageBusConfig messageBusConfig = messageBusImplClient;
-				await messageBusConfig.StartNoQSignalRClient(x => x.UseUrl("http://localhost:5001/NoQ/SignalR"), cancellationToken: cts.Token);
+      IMessageBusConfig messageBusConfig = messageBusImplClient;
+      await messageBusConfig.StartNoQSignalRClient(x => x.UseUrl("http://localhost:5001/NoQ/SignalR"), cancellationToken: cts.Token);
 
-				IMessageBus messageBusServer = messageBusImplServer;
-				IMessageBus messageBusClient = messageBusImplClient;
+      IMessageBus messageBusServer = messageBusImplServer;
+      IMessageBus messageBusClient = messageBusImplClient;
 
-				const string testString = "Test4711";
-				static Task<TestResponse> ReceiveTestRequest(TestRequest request)
-				{
-					return Task.FromResult(new TestResponse(request, testString));
-				}
+      const string testString = "Test4711";
+      static Task<TestResponse> ReceiveTestRequest(TestRequest request) => Task.FromResult(new TestResponse(request, testString));
 
-				await messageBusServer.Subscribe<TestRequest, TestResponse>(ReceiveTestRequest);
+      await messageBusServer.Subscribe<TestRequest, TestResponse>(ReceiveTestRequest);
 
-				TestRequest sendRequest = new();
+      TestRequest sendRequest = new();
 
-				TestResponse[] receivedResponse = await messageBusClient.GetResponses<TestResponse>(sendRequest);
+      var receivedResponse = await messageBusClient.GetResponses<TestResponse>(sendRequest);
 
-				receivedResponse.Should().HaveCount(1);
+      receivedResponse.Should().HaveCount(1);
 
-				receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
-				receivedResponse[0].TestString.Should().Be(testString);
-			}
-			finally
-			{
-				cts.Cancel();
-				await host.StopAsync();
-			}
-		}
-	}
+      receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
+      receivedResponse[0].TestString.Should().Be(testString);
+    }
+    finally
+    {
+      cts.Cancel();
+      await host.StopAsync();
+    }
+  }
 }

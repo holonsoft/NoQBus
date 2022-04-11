@@ -1,12 +1,10 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace holonsoft.NoQBus.PolymorphyHelper
+namespace holonsoft.NoQBus.PolymorphyHelper;
+internal class RootedPreserveReferenceHandler : ReferenceHandler
 {
-	internal class RootedPreserveReferenceHandler : ReferenceHandler
-	{
-		private ReferenceResolver _rootedResolver;
+  private ReferenceResolver _rootedResolver;
 
-		public override ReferenceResolver CreateResolver()
-			 => _rootedResolver ??= new RootedPreserveReferenceResolver();
-	}
+  public override ReferenceResolver CreateResolver()
+     => _rootedResolver ??= new RootedPreserveReferenceResolver();
 }

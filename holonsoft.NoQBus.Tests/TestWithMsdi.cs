@@ -4,87 +4,78 @@ using holonsoft.NoQBus.SignalR.Client;
 using holonsoft.NoQBus.SignalR.Host;
 using holonsoft.NoQBus.Tests.TestDtoClasses;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace holonsoft.NoQBus.Tests
+namespace holonsoft.NoQBus.Tests;
+
+public class TestWithMsdi
 {
-	public class TestWithMsdi
-	{
-		[Fact]
-		public async void TestSimpleLocalMessage()
-		{
-			ServiceCollection serviceCollection = new();
-			serviceCollection.AddNoQMessageBus();
-			var serviceProvider = serviceCollection.BuildServiceProvider();
-			await serviceProvider.StartLocalNoQMessageBus();
+  [Fact]
+  public async void TestSimpleLocalMessage()
+  {
+    ServiceCollection serviceCollection = new();
+    serviceCollection.AddNoQMessageBus();
+    var serviceProvider = serviceCollection.BuildServiceProvider();
+    await serviceProvider.StartLocalNoQMessageBus();
 
-			IMessageBus messageBus = serviceProvider.GetRequiredService<IMessageBus>();
+    var messageBus = serviceProvider.GetRequiredService<IMessageBus>();
 
-			const string testString = "Test4711";
-			static Task<TestResponse> ReceiveTestRequest(TestRequest request)
-			{
-				return Task.FromResult(new TestResponse(request, testString));
-			}
+    const string testString = "Test4711";
+    static Task<TestResponse> ReceiveTestRequest(TestRequest request) => Task.FromResult(new TestResponse(request, testString));
 
-			await messageBus.Subscribe<TestRequest, TestResponse>(ReceiveTestRequest);
+    await messageBus.Subscribe<TestRequest, TestResponse>(ReceiveTestRequest);
 
-			TestRequest sendRequest = new();
+    TestRequest sendRequest = new();
 
-			TestResponse[] receivedResponse = await messageBus.GetResponses<TestResponse>(sendRequest);
+    var receivedResponse = await messageBus.GetResponses<TestResponse>(sendRequest);
 
-			receivedResponse.Should().HaveCount(1);
+    receivedResponse.Should().HaveCount(1);
 
-			receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
-			receivedResponse[0].TestString.Should().Be(testString);
-		}
+    receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
+    receivedResponse[0].TestString.Should().Be(testString);
+  }
 
-		[Fact]
-		public async void TestMessageSendFromServerToClient()
-		{
-			CancellationTokenSource cts = new();
-			try
-			{
-				ServiceCollection serviceCollectionServer = new();
-				serviceCollectionServer.AddNoQMessageBus();
-				serviceCollectionServer.AddNoQSignalRHost();
-				await using var serviceProviderServer = serviceCollectionServer.BuildServiceProvider();
+  [Fact]
+  public async void TestMessageSendFromServerToClient()
+  {
+    CancellationTokenSource cts = new();
+    try
+    {
+      ServiceCollection serviceCollectionServer = new();
+      serviceCollectionServer.AddNoQMessageBus();
+      serviceCollectionServer.AddNoQSignalRHost();
+      await using var serviceProviderServer = serviceCollectionServer.BuildServiceProvider();
 
-				await serviceProviderServer.StartNoQSignalRHost(cancellationToken: cts.Token);
+      await serviceProviderServer.StartNoQSignalRHost(cancellationToken: cts.Token);
 
-				IMessageBus messageBusServer = serviceProviderServer.GetRequiredService<IMessageBus>();
+      var messageBusServer = serviceProviderServer.GetRequiredService<IMessageBus>();
 
-				ServiceCollection serviceCollectionClient = new();
-				serviceCollectionClient.AddNoQMessageBus();
-				serviceCollectionClient.AddNoQSignalRClient();
-				await using var serviceProviderClient = serviceCollectionClient.BuildServiceProvider();
+      ServiceCollection serviceCollectionClient = new();
+      serviceCollectionClient.AddNoQMessageBus();
+      serviceCollectionClient.AddNoQSignalRClient();
+      await using var serviceProviderClient = serviceCollectionClient.BuildServiceProvider();
 
-				await serviceProviderClient.StartNoQSignalRClient(cancellationToken: cts.Token);
+      await serviceProviderClient.StartNoQSignalRClient(cancellationToken: cts.Token);
 
-				IMessageBus messageBusClient = serviceProviderClient.GetRequiredService<IMessageBus>();
+      var messageBusClient = serviceProviderClient.GetRequiredService<IMessageBus>();
 
-				const string testString = "Test4711";
-				static Task<TestResponse> ReceiveTestRequest(TestRequest request)
-				{
-					return Task.FromResult(new TestResponse(request, testString));
-				}
+      const string testString = "Test4711";
+      static Task<TestResponse> ReceiveTestRequest(TestRequest request) => Task.FromResult(new TestResponse(request, testString));
 
-				await messageBusClient.Subscribe<TestRequest, TestResponse>(ReceiveTestRequest);
+      await messageBusClient.Subscribe<TestRequest, TestResponse>(ReceiveTestRequest);
 
-				TestRequest sendRequest = new();
+      TestRequest sendRequest = new();
 
-				TestResponse[] receivedResponse = await messageBusServer.GetResponses<TestResponse>(sendRequest);
+      var receivedResponse = await messageBusServer.GetResponses<TestResponse>(sendRequest);
 
-				receivedResponse.Should().HaveCount(1);
+      receivedResponse.Should().HaveCount(1);
 
-				receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
-				receivedResponse[0].TestString.Should().Be(testString);
-			}
-			finally
-			{
-				cts.Cancel();
-			}
-		}
-	}
+      receivedResponse[0].CorrespondingRequestMessageId.Should().Be(sendRequest.MessageId);
+      receivedResponse[0].TestString.Should().Be(testString);
+    }
+    finally
+    {
+      cts.Cancel();
+    }
+  }
 }

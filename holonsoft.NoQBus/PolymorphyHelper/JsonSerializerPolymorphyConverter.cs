@@ -1,120 +1,132 @@
 ﻿using holonsoft.Utils;
-using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace holonsoft.NoQBus.PolymorphyHelper
+namespace holonsoft.NoQBus.PolymorphyHelper;
+internal class JsonSerializerPolymorphyConverter : JsonConverterFactory
 {
+  private readonly ConcurrentDictionary<Type, JsonConverter> _converterCache = new();
 
-	internal class JsonSerializerPolymorphyConverter : JsonConverterFactory
-	{
-		public Type LastConvertedType { get; set; } //only way to stop endless recursion because we want to use the same serializer to serialize our object as well...
+  //only way to stop endless recursion because we want to use the same serializer to serialize our object as well...
+  public Type LastConvertedType { get; set; }
 
-		public override bool CanConvert(Type typeToConvert)
-		{
-			bool result = !typeToConvert.Namespace.StartsWith(nameof(System), StringComparison.OrdinalIgnoreCase) && typeToConvert != LastConvertedType;
-			if (!result)
-				LastConvertedType = null;
-			return result;
-		}
+  public override bool CanConvert(Type typeToConvert)
+  {
+    var result
+      = typeToConvert != LastConvertedType
+        && !typeToConvert.IsArray
+        && !typeToConvert.IsEnum
+        && !typeToConvert.IsValueType
+        && !typeToConvert.Namespace.StartsWith(nameof(System), StringComparison.OrdinalIgnoreCase)
+        && !typeToConvert.IsSubclassOf(typeof(IEnumerable));
 
-		private readonly ConcurrentDictionary<Type, JsonConverter> _converterCache = new();
+    if (!result)
+    {
+      LastConvertedType = null;
+    }
 
-		public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
-			=> _converterCache.GetOrAdd(typeToConvert, x => (JsonConverter) Activator.CreateInstance(typeof(JsonSerializerPolymorphyConverter<>).MakeGenericType(x), this));
-	}
+    return result;
+  }
 
-	internal class JsonSerializerPolymorphyConverter<T> : JsonConverter<T>
-	{
-		private const string _typeNameField = "$typeName";
-		private const string _typeValueField = "$typeValue";
+  public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
+    => _converterCache
+      .GetOrAdd(typeToConvert, x =>
+        (JsonConverter) Activator.CreateInstance(typeof(JsonSerializerPolymorphyConverter<>).MakeGenericType(x), this));
+}
 
-		private readonly JsonSerializerPolymorphyConverter _parentFactory;
-		public JsonSerializerPolymorphyConverter(JsonSerializerPolymorphyConverter parentFactory)
-			=> _parentFactory = parentFactory;
+internal class JsonSerializerPolymorphyConverter<T> : JsonConverter<T>
+{
+  private const string _typeNameField = "$typeName";
+  private const string _typeValueField = "$typeValue";
 
-		public override bool HandleNull => false;
+  private readonly JsonSerializerPolymorphyConverter _parentFactory;
+  //if we dont cache the options we have a performance loss ~1000x
+  private JsonSerializerOptions _optionsClone;
+  public JsonSerializerPolymorphyConverter(JsonSerializerPolymorphyConverter parentFactory)
+    => _parentFactory = parentFactory;
 
-		public override bool CanConvert(Type typeToConvert)
-			=> _parentFactory.CanConvert(typeToConvert);
+  public override bool HandleNull => false;
 
-		public override T Read(
-			 ref Utf8JsonReader reader,
-			 Type typeToConvert,
-			 JsonSerializerOptions options)
-		{
-			if (reader.TokenType == JsonTokenType.Null)
-			{
-				return default;
-			}
+  public override bool CanConvert(Type typeToConvert)
+    => _parentFactory.CanConvert(typeToConvert);
 
-			if (reader.TokenType != JsonTokenType.StartObject)
-			{
-				throw new JsonException();
-			}
+  public override T Read(
+     ref Utf8JsonReader reader,
+     Type typeToConvert,
+     JsonSerializerOptions options)
+  {
+    if (reader.TokenType == JsonTokenType.Null)
+    {
+      return default;
+    }
 
-			if (!reader.Read() || reader.TokenType != JsonTokenType.PropertyName)
-			{
-				throw new JsonException();
-			}
+    if (reader.TokenType != JsonTokenType.StartObject)
+    {
+      throw new JsonException();
+    }
 
-			if (reader.GetString() != _typeNameField)
-			{
-				throw new JsonException();
-			}
+    if (!reader.Read() || reader.TokenType != JsonTokenType.PropertyName)
+    {
+      throw new JsonException();
+    }
 
-			if (!reader.Read())
-			{
-				throw new JsonException();
-			}
+    if (reader.GetString() != _typeNameField)
+    {
+      throw new JsonException();
+    }
 
-			string typeName = reader.GetString();
+    if (!reader.Read())
+    {
+      throw new JsonException();
+    }
 
-			if (string.IsNullOrWhiteSpace(typeName))
-			{
-				throw new JsonException();
-			}
+    var typeName = reader.GetString();
 
-			if (!ReflectionUtils.AllNonAbstractTypes.TryGetValue(typeName, out Type type))
-			{
-				throw new JsonException();
-			}
+    if (string.IsNullOrWhiteSpace(typeName))
+    {
+      throw new JsonException();
+    }
 
-			if (!reader.Read() || reader.GetString() != _typeValueField)
-			{
-				throw new JsonException();
-			}
-			if (!reader.Read() || reader.TokenType != JsonTokenType.StartObject)
-			{
-				throw new JsonException();
-			}
+    if (!ReflectionUtils.AllNonAbstractTypes.TryGetValue(typeName, out var type))
+    {
+      throw new JsonException();
+    }
 
-			_parentFactory.LastConvertedType = type;
-			T result = (T) JsonSerializer.Deserialize(ref reader, type, new JsonSerializerOptions(options));
+    if (!reader.Read() || reader.GetString() != _typeValueField)
+    {
+      throw new JsonException();
+    }
+    if (!reader.Read() || reader.TokenType != JsonTokenType.StartObject)
+    {
+      throw new JsonException();
+    }
 
-			if (!reader.Read() || reader.TokenType != JsonTokenType.EndObject)
-			{
-				throw new JsonException();
-			}
+    _parentFactory.LastConvertedType = type;
+    var result = (T) JsonSerializer.Deserialize(ref reader, type, _optionsClone ??= new JsonSerializerOptions(options));
 
-			return result;
-		}
+    if (!reader.Read() || reader.TokenType != JsonTokenType.EndObject)
+    {
+      throw new JsonException();
+    }
 
-		public override void Write(
-				Utf8JsonWriter writer,
-				T value,
-				JsonSerializerOptions options)
-		{
-			writer.WriteStartObject();
+    return result;
+  }
 
-			writer.WriteString(_typeNameField, value.GetType().FullName);
-			writer.WritePropertyName(_typeValueField);
+  public override void Write(
+      Utf8JsonWriter writer,
+      T value,
+      JsonSerializerOptions options)
+  {
+    writer.WriteStartObject();
 
-			_parentFactory.LastConvertedType = value.GetType();
-			JsonSerializer.Serialize(writer, value, value.GetType(), new JsonSerializerOptions(options));
+    writer.WriteString(_typeNameField, value.GetType().FullName);
+    writer.WritePropertyName(_typeValueField);
 
-			writer.WriteEndObject();
-		}
-	}
+    _parentFactory.LastConvertedType = value.GetType();
+    JsonSerializer.Serialize(writer, value, value.GetType(), _optionsClone ??= new JsonSerializerOptions(options));
+
+    writer.WriteEndObject();
+  }
 }

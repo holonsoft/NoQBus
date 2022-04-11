@@ -1,21 +1,18 @@
-﻿using System;
+﻿namespace holonsoft.NoQBus.Abstractions.Models;
 
-namespace holonsoft.NoQBus.Abstractions.Models
+public class SinkTransportDataResponse
 {
-	public class SinkTransportDataResponse
-	{
-		public Guid RequestIdentifier { get; init; }
-		public SinkTransportDataResponseEntry[] ResponseEntries { get; init; }
+  public Guid RequestIdentifier { get; init; }
+  public SinkTransportDataResponseEntry[] ResponseEntries { get; init; }
 
-		public SinkTransportDataResponse() { } //for serializer
+  public SinkTransportDataResponse() { } //for serializer
 
-		public SinkTransportDataResponse(Guid requestIdentifier, params SinkTransportDataResponseEntry[] responseEntries) : this()
-		{
-			RequestIdentifier = requestIdentifier;
-			ResponseEntries = responseEntries;
-		}
+  public SinkTransportDataResponse(Guid requestIdentifier, params SinkTransportDataResponseEntry[] responseEntries) : this()
+  {
+    RequestIdentifier = requestIdentifier;
+    ResponseEntries = responseEntries;
+  }
 
-		public SinkTransportDataResponse(SinkTransportDataRequest request, params SinkTransportDataResponseEntry[] responseEntries)
-			 : this(request.RequestIdentifier, responseEntries) { }
-	}
+  public SinkTransportDataResponse(SinkTransportDataRequest request, params SinkTransportDataResponseEntry[] responseEntries)
+     : this(request.RequestIdentifier, responseEntries) { }
 }

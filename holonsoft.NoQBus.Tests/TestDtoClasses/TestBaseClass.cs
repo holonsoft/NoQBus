@@ -1,7 +1,5 @@
-﻿namespace holonsoft.NoQBus.Tests.TestDtoClasses
+﻿namespace holonsoft.NoQBus.Tests.TestDtoClasses;
+public abstract class TestBaseClass
 {
-	public abstract class TestBaseClass
-	{
-		public string SomeString { get; set; }
-	}
+  public string SomeString { get; set; }
 }
