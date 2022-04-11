@@ -20,11 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.3.0" />
     <PackageReference Include="holonsoft.FluentConditions" Version="1.6.2" />
     <PackageReference Include="holonsoft.Utils" Version="1.6.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="System.Text.Json" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>

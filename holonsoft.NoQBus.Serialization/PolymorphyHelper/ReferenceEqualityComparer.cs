@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace holonsoft.NoQBus.PolymorphyHelper;
+namespace holonsoft.NoQBus.Serialization.PolymorphyHelper;
 internal sealed class ReferenceEqualityComparer : IEqualityComparer<object>, IEqualityComparer
 {
   private ReferenceEqualityComparer() { }

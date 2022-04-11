@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace holonsoft.NoQBus.PolymorphyHelper;
+namespace holonsoft.NoQBus.Serialization.PolymorphyHelper;
 internal class RootedPreserveReferenceResolver : ReferenceResolver
 {
   private uint _referenceCount;

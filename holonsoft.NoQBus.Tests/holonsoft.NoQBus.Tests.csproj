@@ -38,8 +38,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\holonsoft.NoQBus.Abstractions\holonsoft.NoQBus.Abstractions.csproj" />
+    <ProjectReference Include="..\holonsoft.NoQBus.Extensions.Autofac\holonsoft.NoQBus.Extensions.Autofac.csproj" />
+    <ProjectReference Include="..\holonsoft.NoQBus.Extensions.Microsoft\holonsoft.NoQBus.Extensions.Microsoft.csproj" />
+    <ProjectReference Include="..\holonsoft.NoQBus.Remoting\holonsoft.NoQBus.Remoting.csproj" />
+    <ProjectReference Include="..\holonsoft.NoQBus.Serialization\holonsoft.NoQBus.Serialization.csproj" />
     <ProjectReference Include="..\holonsoft.NoQBus.SignalR.Abstractions\holonsoft.NoQBus.SignalR.Abstractions.csproj" />
+    <ProjectReference Include="..\holonsoft.NoQBus.SignalR.Client.Extensions.Autofac\holonsoft.NoQBus.SignalR.Client.Extensions.Autofac.csproj" />
+    <ProjectReference Include="..\holonsoft.NoQBus.SignalR.Client.Extensions.Microsoft\holonsoft.NoQBus.SignalR.Client.Extensions.Microsoft.csproj" />
     <ProjectReference Include="..\holonsoft.NoQBus.SignalR.Client\holonsoft.NoQBus.SignalR.Client.csproj" />
+    <ProjectReference Include="..\holonsoft.NoQBus.SignalR.Host.Extensions.Autofac\holonsoft.NoQBus.SignalR.Host.Extensions.Autofac.csproj" />
+    <ProjectReference Include="..\holonsoft.NoQBus.SignalR.Host.Extensions.Microsoft\holonsoft.NoQBus.SignalR.Host.Extensions.Microsoft.csproj" />
     <ProjectReference Include="..\holonsoft.NoQBus.SignalR.Host\holonsoft.NoQBus.SignalR.Host.csproj" />
     <ProjectReference Include="..\holonsoft.NoQBus\holonsoft.NoQBus.csproj" />
   </ItemGroup>

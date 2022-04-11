@@ -1,33 +1,21 @@
 ﻿using holonsoft.FluentConditions;
 using holonsoft.NoQBus.Abstractions.Contracts;
-using holonsoft.NoQBus.Abstractions.Models;
-using holonsoft.NoQBus.PolymorphyHelper;
+using holonsoft.NoQBus.Remoting.Models;
 using holonsoft.Utils;
-using System.Text;
-using System.Text.Json;
 
-namespace holonsoft.NoQBus;
+namespace holonsoft.NoQBus.Remoting;
 public abstract class MessageBusSinkBase : IMessageBusSink
 {
+  protected MessageBusSinkBase(IMessageSerializer messageSerializer)
+    => _messageSerializer = messageSerializer;
+
   private IRemoteMessageBus _messageBus;
-  public void SetMessageBus(IRemoteMessageBus messageBus) => _messageBus = _messageBus == null ? messageBus : throw new NotSupportedException($"MessageBus for the {nameof(MessageBusSinkBase)} is already set!");
+  private readonly IMessageSerializer _messageSerializer;
+
+  public void SetMessageBus(IRemoteMessageBus messageBus)
+    => _messageBus = _messageBus == null ? messageBus : throw new NotSupportedException($"MessageBus for the {nameof(MessageBusSinkBase)} is already set!");
   protected IRemoteMessageBus EnsureMessageBus()
      => _messageBus ?? throw new NotSupportedException($"MessageBus for the {nameof(MessageBusSinkBase)} is not set!");
-
-  public static JsonSerializerOptions CreateSerializerOptions()
-  {
-    JsonSerializerOptions options = new()
-    {
-      ReferenceHandler = new RootedPreserveReferenceHandler(), //for the converter - thats why have all the time to create this JsonSerializerOptions new!
-      WriteIndented = true
-    };
-
-    options.Converters.Add(new JsonSerializerPolymorphyConverter());
-
-    return options;
-  }
-
-  private readonly Encoding _encoding = Encoding.UTF8;
 
   public abstract Task StartAsync(CancellationToken cancellationToken = default);
 
@@ -35,7 +23,7 @@ public abstract class MessageBusSinkBase : IMessageBusSink
 
   public async Task<IResponse[]> GetResponses(IRequest request)
   {
-    var serializedRequest = _encoding.GetBytes(JsonSerializer.Serialize(request, request.GetType(), CreateSerializerOptions()));
+    var serializedRequest = _messageSerializer.Serialize(request);
     var response = await TransportToEndpoint(new SinkTransportDataRequest(request.GetType().FullName, serializedRequest));
     return
        response.ResponseEntries
@@ -49,7 +37,7 @@ public abstract class MessageBusSinkBase : IMessageBusSink
       {
         responseType.Requires(nameof(responseType)).IsOfType<IResponse>();
 
-        return (IResponse) JsonSerializer.Deserialize(_encoding.GetString(entry.SerializedRequestMessage), responseType, CreateSerializerOptions());
+        return (IResponse) _messageSerializer.Deserialize(responseType, entry.SerializedRequestMessage);
       }
       throw new InvalidOperationException($"Could not deserialize type {entry.TypeName} - type not found!");
     }
@@ -61,13 +49,14 @@ public abstract class MessageBusSinkBase : IMessageBusSink
     {
       requestType.Requires(nameof(requestType)).IsOfType<IRequest>();
 
-      var deserializedRequest = (IRequest) JsonSerializer.Deserialize(_encoding.GetString(request.SerializedRequestMessage), requestType, CreateSerializerOptions());
+      var deserializedRequest = (IRequest) _messageSerializer.Deserialize(requestType, request.SerializedRequestMessage);
       var responses = await EnsureMessageBus().GetResponsesForRemoteRequest(deserializedRequest);
       return new SinkTransportDataResponse(request, responses.Select(SerializeEntry).ToArray());
 
     }
     throw new InvalidOperationException($"Could not deserialize type {request.TypeName} - type not found!");
 
-    SinkTransportDataResponseEntry SerializeEntry(IResponse entry) => new SinkTransportDataResponseEntry(entry.GetType().FullName, _encoding.GetBytes(JsonSerializer.Serialize(entry, entry.GetType(), CreateSerializerOptions())));
+    SinkTransportDataResponseEntry SerializeEntry(IResponse entry)
+      => new SinkTransportDataResponseEntry(entry.GetType().FullName, _messageSerializer.Serialize(entry));
   }
 }

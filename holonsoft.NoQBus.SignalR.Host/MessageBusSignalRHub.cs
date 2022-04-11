@@ -1,5 +1,4 @@
-﻿using holonsoft.NoQBus.Abstractions.Contracts;
-using holonsoft.NoQBus.Abstractions.Models;
+﻿using holonsoft.NoQBus.Remoting.Models;
 using holonsoft.NoQBus.SignalR.Abstractions.Contracts;
 using Microsoft.AspNetCore.SignalR;
 
@@ -7,7 +6,7 @@ namespace holonsoft.NoQBus.SignalR.Host;
 
 public class MessageBusSignalRHub : Hub<IMessageBusSignalRClient>, IMessageBusSignalRHub
 {
-  private readonly IMessageBusSink _host;
+  private readonly MessageBusSignalRHost _host;
   private readonly MessageBusSignalRHubStateStore _stateStore;
 
   public MessageBusSignalRHub(MessageBusSignalRHost host, MessageBusSignalRHubStateStore stateStore)

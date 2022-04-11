@@ -1,7 +1,10 @@
 ﻿using FluentAssertions;
 using holonsoft.NoQBus.Abstractions.Contracts;
+using holonsoft.NoQBus.Extensions.Microsoft;
+using holonsoft.NoQBus.Serialization;
 using holonsoft.NoQBus.SignalR.Client;
 using holonsoft.NoQBus.SignalR.Host;
+using holonsoft.NoQBus.SignalR.Host.Extensions.Microsoft;
 using holonsoft.NoQBus.Tests.TestDtoClasses;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -50,7 +53,7 @@ public class TestExistingHost
       await host.StartNoQSignalRHostOnExistingAspNetCoreHost(cancellationToken: cts.Token);
 
       var messageBusImplServer = host.Services.GetRequiredService<MessageBus>();
-      MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
+      MessageBus messageBusImplClient = new(new MessageBusSignalRClient(new MessageSerializer()));
 
       IMessageBusConfig messageBusConfig = messageBusImplClient;
       await messageBusConfig.StartNoQSignalRClient(x => x.UseUrl("http://localhost:5001/NoQ/SignalR"), cancellationToken: cts.Token);

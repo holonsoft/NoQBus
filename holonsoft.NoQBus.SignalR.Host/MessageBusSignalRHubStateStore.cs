@@ -1,4 +1,4 @@
-﻿using holonsoft.NoQBus.Abstractions.Models;
+﻿using holonsoft.NoQBus.Remoting.Models;
 using System.Collections.Concurrent;
 
 namespace holonsoft.NoQBus.SignalR.Host;

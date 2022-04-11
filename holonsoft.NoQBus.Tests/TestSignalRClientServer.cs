@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using holonsoft.NoQBus.Abstractions.Contracts;
+using holonsoft.NoQBus.Serialization;
 using holonsoft.NoQBus.SignalR.Client;
 using holonsoft.NoQBus.SignalR.Host;
 using holonsoft.NoQBus.Tests.TestDtoClasses;
@@ -15,8 +16,8 @@ public class TestSignalRClientServer
     CancellationTokenSource cts = new();
     try
     {
-      MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
-      MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
+      MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore(), new MessageSerializer()));
+      MessageBus messageBusImplClient = new(new MessageBusSignalRClient(new MessageSerializer()));
 
       IMessageBusConfig messageBusConfig = messageBusImplServer;
       await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);
@@ -53,8 +54,8 @@ public class TestSignalRClientServer
     CancellationTokenSource cts = new();
     try
     {
-      MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
-      MessageBus messageBusImplClient = new(new MessageBusSignalRClient());
+      MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore(), new MessageSerializer()));
+      MessageBus messageBusImplClient = new(new MessageBusSignalRClient(new MessageSerializer()));
 
       IMessageBusConfig messageBusConfig = messageBusImplServer;
       await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);
@@ -91,7 +92,7 @@ public class TestSignalRClientServer
     CancellationTokenSource cts = new();
     try
     {
-      MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore()));
+      MessageBus messageBusImplServer = new(new MessageBusSignalRHost(new MessageBusSignalRHubStateStore(), new MessageSerializer()));
 
       IMessageBusConfig messageBusConfig = messageBusImplServer;
       await messageBusConfig.StartNoQSignalRHost(cancellationToken: cts.Token);

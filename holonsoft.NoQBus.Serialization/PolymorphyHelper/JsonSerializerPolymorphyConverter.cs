@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace holonsoft.NoQBus.PolymorphyHelper;
+namespace holonsoft.NoQBus.Serialization.PolymorphyHelper;
 internal class JsonSerializerPolymorphyConverter : JsonConverterFactory
 {
   private readonly ConcurrentDictionary<Type, JsonConverter> _converterCache = new();

@@ -1,7 +1,10 @@
 ﻿using FluentAssertions;
 using holonsoft.NoQBus.Abstractions.Contracts;
+using holonsoft.NoQBus.Extensions.Microsoft;
 using holonsoft.NoQBus.SignalR.Client;
+using holonsoft.NoQBus.SignalR.Client.Extensions.Microsoft;
 using holonsoft.NoQBus.SignalR.Host;
+using holonsoft.NoQBus.SignalR.Host.Extensions.Microsoft;
 using holonsoft.NoQBus.Tests.TestDtoClasses;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -15,7 +18,7 @@ public class TestWithMsdi
   {
     ServiceCollection serviceCollection = new();
     serviceCollection.AddNoQMessageBus();
-    var serviceProvider = serviceCollection.BuildServiceProvider();
+    await using var serviceProvider = serviceCollection.BuildServiceProvider();
     await serviceProvider.StartLocalNoQMessageBus();
 
     var messageBus = serviceProvider.GetRequiredService<IMessageBus>();

@@ -1,6 +1,4 @@
-﻿using holonsoft.NoQBus.Abstractions.Models;
-
-namespace holonsoft.NoQBus.Abstractions.Contracts;
+﻿namespace holonsoft.NoQBus.Abstractions.Contracts;
 
 /// <summary>
 /// Interface to configure and handle remoting of messagebus
@@ -26,11 +24,4 @@ public interface IMessageBusSink
   /// <param name="request">Request message</param>
   /// <returns>A task with an array of responses, <see cref="IResponse"/></returns>
   public Task<IResponse[]> GetResponses(IRequest request);
-
-  /// <summary>
-  /// Get an array of responses after sending a request to an endpoint in a single wrapper message
-  /// </summary>
-  /// <param name="request">Wrapped (for transport) request message</param>
-  /// <returns><see cref="SinkTransportDataResponse"/></returns>
-  public Task<SinkTransportDataResponse> GetResponsesForRemoteRequest(SinkTransportDataRequest request);
 }

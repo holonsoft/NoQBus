@@ -1,4 +1,4 @@
-﻿namespace holonsoft.NoQBus.Abstractions.Models;
+﻿namespace holonsoft.NoQBus.Remoting.Models;
 
 public record SinkTransportDataRequest
 {

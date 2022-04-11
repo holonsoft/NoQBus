@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
+using holonsoft.NoQBus.Serialization;
 using holonsoft.NoQBus.Tests.TestDtoClasses;
-using System.Text.Json;
 using Xunit;
 
 namespace holonsoft.NoQBus.Tests;
@@ -10,20 +10,20 @@ public class TestPolymorphicSerialization
   [Fact]
   public void TestBaseClass()
   {
-    var options = MessageBusSinkBase.CreateSerializerOptions();
+    var serializer = new MessageSerializer();
 
     var testObj = new TestClassWithBaseClassField() { BaseClassField = new TestInheritedA() { SomeInt = 12, SomeString = "NowWithA" } };
 
-    var serialized = JsonSerializer.Serialize(testObj, typeof(TestClassWithBaseClassField), options);
-    var deserialized = (TestClassWithBaseClassField) JsonSerializer.Deserialize(serialized, typeof(TestClassWithBaseClassField), options);
+    var serialized = serializer.Serialize(testObj);
+    var deserialized = (TestClassWithBaseClassField) serializer.Deserialize(typeof(TestClassWithBaseClassField), serialized);
 
     deserialized.BaseClassField.SomeString.Should().Be("NowWithA");
     deserialized.BaseClassField.Should().BeOfType<TestInheritedA>().Subject.SomeInt.Should().Be(12);
 
     testObj = new TestClassWithBaseClassField() { BaseClassField = new TestInheritedB() { SomeFloat = 12.5, SomeString = "NowWithB" } };
 
-    serialized = JsonSerializer.Serialize(testObj, typeof(TestClassWithBaseClassField), options);
-    deserialized = (TestClassWithBaseClassField) JsonSerializer.Deserialize(serialized, typeof(TestClassWithBaseClassField), options);
+    serialized = serializer.Serialize(testObj);
+    deserialized = (TestClassWithBaseClassField) serializer.Deserialize(typeof(TestClassWithBaseClassField), serialized);
 
     deserialized.BaseClassField.SomeString.Should().Be("NowWithB");
     deserialized.BaseClassField.Should().BeOfType<TestInheritedB>().Subject.SomeFloat.Should().Be(12.5);
@@ -33,8 +33,8 @@ public class TestPolymorphicSerialization
 
     testObj.BaseClassField2 = testObj.BaseClassField;
 
-    serialized = JsonSerializer.Serialize(testObj, typeof(TestClassWithBaseClassField), options);
-    deserialized = (TestClassWithBaseClassField) JsonSerializer.Deserialize(serialized, typeof(TestClassWithBaseClassField), options);
+    serialized = serializer.Serialize(testObj);
+    deserialized = (TestClassWithBaseClassField) serializer.Deserialize(typeof(TestClassWithBaseClassField), serialized);
 
     deserialized.BaseClassField.SomeString.Should().Be("NowWithB");
     deserialized.BaseClassField.Should().BeOfType<TestInheritedB>().Subject.SomeFloat.Should().Be(12.5);

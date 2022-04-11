@@ -1,8 +1,11 @@
 ﻿using Autofac;
 using FluentAssertions;
 using holonsoft.NoQBus.Abstractions.Contracts;
+using holonsoft.NoQBus.Extensions.Autofac;
 using holonsoft.NoQBus.SignalR.Client;
+using holonsoft.NoQBus.SignalR.Client.Extensions.Autofac;
 using holonsoft.NoQBus.SignalR.Host;
+using holonsoft.NoQBus.SignalR.Host.Extensions.Autofac;
 using holonsoft.NoQBus.Tests.TestDtoClasses;
 using Xunit;
 

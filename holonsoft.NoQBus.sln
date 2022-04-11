@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31320.298
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "holonsoft.NoQBus", "holonsoft.NoQBus\holonsoft.NoQBus.csproj", "{1A7FCF70-9B64-4844-B627-CB21C5BB661F}"
 EndProject
@@ -22,6 +22,22 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "holonsoft.NoQBus.SignalR.Client", "holonsoft.NoQBus.SignalR.Client\holonsoft.NoQBus.SignalR.Client.csproj", "{B9365C5B-020E-4798-8B9E-0766B51EAFBB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "holonsoft.NoQBus.SignalR.Host", "holonsoft.NoQBus.SignalR.Host\holonsoft.NoQBus.SignalR.Host.csproj", "{070EEAB3-AA58-4575-909A-20EECB7E7617}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "holonsoft.NoQBus.Serialization", "holonsoft.NoQBus.Serialization\holonsoft.NoQBus.Serialization.csproj", "{156B8028-B6B9-434E-B47F-B67BAF99AA11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "holonsoft.NoQBus.Remoting", "holonsoft.NoQBus.Remoting\holonsoft.NoQBus.Remoting.csproj", "{F1C7E2C2-1DD6-48BF-AED8-B5F417FDADED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "holonsoft.NoQBus.Extensions.Autofac", "holonsoft.NoQBus.Extensions.Autofac\holonsoft.NoQBus.Extensions.Autofac.csproj", "{6260B38C-D135-484B-A21B-A064CBD066C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "holonsoft.NoQBus.Extensions.Microsoft", "holonsoft.NoQBus.Extensions.Microsoft\holonsoft.NoQBus.Extensions.Microsoft.csproj", "{E253F8A2-17CC-42E8-8850-0017B79D8440}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "holonsoft.NoQBus.SignalR.Client.Extensions.Autofac", "holonsoft.NoQBus.SignalR.Client.Extensions.Autofac\holonsoft.NoQBus.SignalR.Client.Extensions.Autofac.csproj", "{18FF09BA-8A7D-44C7-9679-EB25C19613ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "holonsoft.NoQBus.SignalR.Host.Extensions.Autofac", "holonsoft.NoQBus.SignalR.Host.Extensions.Autofac\holonsoft.NoQBus.SignalR.Host.Extensions.Autofac.csproj", "{4D7B175B-A80B-4F4F-8E47-BD60DC504642}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "holonsoft.NoQBus.SignalR.Host.Extensions.Microsoft", "holonsoft.NoQBus.SignalR.Host.Extensions.Microsoft\holonsoft.NoQBus.SignalR.Host.Extensions.Microsoft.csproj", "{CC9A8F8E-E285-41E5-9994-38BFA853DA81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "holonsoft.NoQBus.SignalR.Client.Extensions.Microsoft", "holonsoft.NoQBus.SignalR.Client.Extensions.Microsoft\holonsoft.NoQBus.SignalR.Client.Extensions.Microsoft.csproj", "{FB736572-D6A5-4890-AF93-7A21BFC82C99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +69,38 @@ Global
 		{070EEAB3-AA58-4575-909A-20EECB7E7617}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{070EEAB3-AA58-4575-909A-20EECB7E7617}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{070EEAB3-AA58-4575-909A-20EECB7E7617}.Release|Any CPU.Build.0 = Release|Any CPU
+		{156B8028-B6B9-434E-B47F-B67BAF99AA11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{156B8028-B6B9-434E-B47F-B67BAF99AA11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{156B8028-B6B9-434E-B47F-B67BAF99AA11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{156B8028-B6B9-434E-B47F-B67BAF99AA11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1C7E2C2-1DD6-48BF-AED8-B5F417FDADED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1C7E2C2-1DD6-48BF-AED8-B5F417FDADED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1C7E2C2-1DD6-48BF-AED8-B5F417FDADED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1C7E2C2-1DD6-48BF-AED8-B5F417FDADED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6260B38C-D135-484B-A21B-A064CBD066C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6260B38C-D135-484B-A21B-A064CBD066C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6260B38C-D135-484B-A21B-A064CBD066C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6260B38C-D135-484B-A21B-A064CBD066C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E253F8A2-17CC-42E8-8850-0017B79D8440}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E253F8A2-17CC-42E8-8850-0017B79D8440}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E253F8A2-17CC-42E8-8850-0017B79D8440}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E253F8A2-17CC-42E8-8850-0017B79D8440}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18FF09BA-8A7D-44C7-9679-EB25C19613ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18FF09BA-8A7D-44C7-9679-EB25C19613ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18FF09BA-8A7D-44C7-9679-EB25C19613ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18FF09BA-8A7D-44C7-9679-EB25C19613ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D7B175B-A80B-4F4F-8E47-BD60DC504642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D7B175B-A80B-4F4F-8E47-BD60DC504642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D7B175B-A80B-4F4F-8E47-BD60DC504642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D7B175B-A80B-4F4F-8E47-BD60DC504642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC9A8F8E-E285-41E5-9994-38BFA853DA81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC9A8F8E-E285-41E5-9994-38BFA853DA81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC9A8F8E-E285-41E5-9994-38BFA853DA81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC9A8F8E-E285-41E5-9994-38BFA853DA81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB736572-D6A5-4890-AF93-7A21BFC82C99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB736572-D6A5-4890-AF93-7A21BFC82C99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB736572-D6A5-4890-AF93-7A21BFC82C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB736572-D6A5-4890-AF93-7A21BFC82C99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

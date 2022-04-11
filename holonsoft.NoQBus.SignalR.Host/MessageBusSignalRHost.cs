@@ -1,4 +1,6 @@
-﻿using holonsoft.NoQBus.Abstractions.Models;
+﻿using holonsoft.NoQBus.Abstractions.Contracts;
+using holonsoft.NoQBus.Remoting;
+using holonsoft.NoQBus.Remoting.Models;
 using holonsoft.NoQBus.SignalR.Abstractions;
 using holonsoft.NoQBus.SignalR.Abstractions.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -21,7 +23,7 @@ public partial class MessageBusSignalRHost : MessageBusSinkBase
   public string Url { get; private set; } = MessageBusSignalRConstants.DefaultUrl;
   public bool ExistingAspNetCoreHost { get; set; }
 
-  public MessageBusSignalRHost(MessageBusSignalRHubStateStore stateStore)
+  public MessageBusSignalRHost(MessageBusSignalRHubStateStore stateStore, IMessageSerializer messageSerializer) : base(messageSerializer)
     => _stateStore = stateStore;
 
   public override async Task<SinkTransportDataResponse> TransportToEndpoint(SinkTransportDataRequest request)
@@ -85,12 +87,19 @@ public partial class MessageBusSignalRHost : MessageBusSinkBase
                    {
                      services.AddSingleton(_stateStore);
                      services.AddSingleton(this);
-                     services.AddSignalR(o => o.EnableDetailedErrors = true);
+                     services.AddSignalR(o =>
+                     {
+                       o.EnableDetailedErrors = true;
+                       o.MaximumParallelInvocationsPerClient = int.MaxValue;
+                       o.MaximumReceiveMessageSize = int.MaxValue;
+                     });
                    });
 
                    webBuilder.Configure(app =>
                    {
-                     app.UseNoQSignalRHost();
+                     var host = app.ApplicationServices.GetRequiredService<MessageBusSignalRHost>();
+                     var context = app.ApplicationServices.GetRequiredService<IHubContext<MessageBusSignalRHub, IMessageBusSignalRClient>>();
+                     host.SetHubContext(context);
 
                      app.UseRouting();
 

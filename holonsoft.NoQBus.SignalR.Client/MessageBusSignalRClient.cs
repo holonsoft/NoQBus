@@ -1,5 +1,7 @@
-﻿using holonsoft.NoQBus.Abstractions.Exceptions;
-using holonsoft.NoQBus.Abstractions.Models;
+﻿using holonsoft.NoQBus.Abstractions.Contracts;
+using holonsoft.NoQBus.Abstractions.Exceptions;
+using holonsoft.NoQBus.Remoting;
+using holonsoft.NoQBus.Remoting.Models;
 using holonsoft.NoQBus.SignalR.Abstractions;
 using holonsoft.NoQBus.SignalR.Abstractions.Contracts;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -14,6 +16,10 @@ public partial class MessageBusSignalRClient
   private HubConnection _connection;
   private SpokeRegistration _connectionSpoke;
   private IMessageBusSignalRHub _typedHub;
+
+  public MessageBusSignalRClient(IMessageSerializer messageSerializer) : base(messageSerializer)
+  {
+  }
 
   public string Url { get; private set; } = MessageBusSignalRConstants.DefaultUrl;
   public TimeSpan RetryDelay { get; private set; } = MessageBusSignalRConstants.DefaultRetryDelay;

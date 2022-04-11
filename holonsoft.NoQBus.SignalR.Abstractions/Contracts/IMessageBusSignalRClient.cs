@@ -1,4 +1,4 @@
-﻿using holonsoft.NoQBus.Abstractions.Models;
+﻿using holonsoft.NoQBus.Remoting.Models;
 
 namespace holonsoft.NoQBus.SignalR.Abstractions.Contracts
 {

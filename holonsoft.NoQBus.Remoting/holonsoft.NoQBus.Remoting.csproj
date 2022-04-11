@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Authors>Alexander Bülow, Christian Vogt</Authors>
     <Company>holonsoft</Company>
-    <PackageProjectUrl>https://www.nuget.org/packages/holonsoft.NoQBus.Abstractions/</PackageProjectUrl>
+    <PackageProjectUrl>https://www.nuget.org/packages/holonsoft.NoQBus.Remoting/</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Copyright>holonsoft</Copyright>
-    <Description>Abstractions for an asynchronous, fast and fully parallelized message bus.</Description>
+    <Description>Remoting for an asynchronous, fast and fully parallelized message bus.</Description>
     <RepositoryUrl>https://github.com/holonsoft/NoQBus</RepositoryUrl>
     <Version>1.7.0</Version>
     <TargetFrameworks>net6.0</TargetFrameworks>
@@ -15,7 +15,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <DebugType>Embedded</DebugType>
     <RepositoryType>GIT</RepositoryType>
-    <PackageId>holonsoft.NoQBus.Abstractions</PackageId>
+    <PackageId>holonsoft.NoQBus.Remoting</PackageId>
     <PackageTags>holonsoft;noqbus;messagebus;net6</PackageTags>
   </PropertyGroup>
 
@@ -25,5 +25,14 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <PackageReference Include="holonsoft.Utils" Version="1.6.2" />
+    <PackageReference Include="holonsoft.FluentConditions" Version="1.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\holonsoft.NoQBus.Abstractions\holonsoft.NoQBus.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>
