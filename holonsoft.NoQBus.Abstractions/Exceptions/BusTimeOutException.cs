@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace holonsoft.NoQBus.Abstractions.Exceptions;
+﻿namespace holonsoft.NoQBus.Abstractions.Exceptions;
 
 /// <summary>
 /// Internal bus exception to make sure that we never wait endless on a call
@@ -19,7 +17,4 @@ public class BusTimeOutException : Exception
   {
   }
 
-  public BusTimeOutException(SerializationInfo info, StreamingContext context) : base(info, context)
-  {
-  }
 }

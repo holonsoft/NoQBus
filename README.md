@@ -10,6 +10,10 @@ It has
 - no serialization if a message stays on one side!
 - advanced filtering of requests or repsonses
 
+## new in v2.1
+* Add support for net 8, net9, net10
+* Chg Xunit async void (deprecated) to async Task support
+
 ## Samples
 
 ### Subscription with no response:

@@ -15,7 +15,7 @@ namespace holonsoft.NoQBus.Tests;
 public class TestExistingHost
 {
   [Fact]
-  public async void TestMessageSendFromClientToServerWithExistingHost()
+  public async Task TestMessageSendFromClientToServerWithExistingHost()
   {
     CancellationTokenSource cts = new();
 

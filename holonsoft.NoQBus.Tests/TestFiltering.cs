@@ -8,7 +8,7 @@ namespace holonsoft.NoQBus.Tests;
 public class TestFiltering
 {
   [Fact]
-  public async void TestOneRequestFilter()
+  public async Task TestOneRequestFilter()
   {
     MessageBus messageBusImpl = new();
 
@@ -47,7 +47,7 @@ public class TestFiltering
   }
 
   [Fact]
-  public async void TestTwoRequestFilter()
+  public async Task TestTwoRequestFilter()
   {
     MessageBus messageBusImpl = new();
 
@@ -97,7 +97,7 @@ public class TestFiltering
   }
 
   [Fact]
-  public async void TestOneResponseFilter()
+  public async Task TestOneResponseFilter()
   {
     MessageBus messageBusImpl = new();
 
@@ -136,7 +136,7 @@ public class TestFiltering
   }
 
   [Fact]
-  public async void TestTwoResponseFilter()
+  public async Task TestTwoResponseFilter()
   {
     MessageBus messageBusImpl = new();
 

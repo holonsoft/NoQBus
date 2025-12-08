@@ -10,7 +10,7 @@ namespace holonsoft.NoQBus.Tests;
 public class TestSignalRClientServer
 {
   [Fact]
-  public async void TestMessageSendFromClientToServer()
+  public async Task TestMessageSendFromClientToServer()
   {
     CancellationTokenSource cts = new();
     try
@@ -48,7 +48,7 @@ public class TestSignalRClientServer
   }
 
   [Fact]
-  public async void TestMessageSendFromServerToClient()
+  public async Task TestMessageSendFromServerToClient()
   {
     CancellationTokenSource cts = new();
     try
@@ -86,7 +86,7 @@ public class TestSignalRClientServer
   }
 
   [Fact]
-  public async void TestMessageSendFromServerButNoClientConnected()
+  public async Task TestMessageSendFromServerButNoClientConnected()
   {
     CancellationTokenSource cts = new();
     try

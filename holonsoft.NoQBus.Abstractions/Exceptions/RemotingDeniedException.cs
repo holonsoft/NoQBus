@@ -1,5 +1,4 @@
 ﻿using holonsoft.NoQBus.Abstractions.Attributes;
-using System.Runtime.Serialization;
 
 namespace holonsoft.NoQBus.Abstractions.Exceptions;
 
@@ -17,10 +16,6 @@ public class RemotingDeniedException : Exception
   }
 
   public RemotingDeniedException(string message, Exception innerException) : base(message, innerException)
-  {
-  }
-
-  protected RemotingDeniedException(SerializationInfo info, StreamingContext context) : base(info, context)
   {
   }
 }

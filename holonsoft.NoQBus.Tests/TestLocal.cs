@@ -8,7 +8,7 @@ namespace holonsoft.NoQBus.Tests;
 public partial class TestLocal
 {
   [Fact]
-  public async void TestSimpleLocalMessage()
+  public async Task TestSimpleLocalMessage()
   {
     MessageBus messageBusImpl = new();
 

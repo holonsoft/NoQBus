@@ -11,7 +11,7 @@ namespace holonsoft.NoQBus.Tests;
 public class TestWithAutofac
 {
   [Fact]
-  public async void TestSimpleLocalMessage()
+  public async Task TestSimpleLocalMessage()
   {
     ContainerBuilder containerBuilder = new();
     containerBuilder.AddNoQMessageBus();
@@ -36,7 +36,7 @@ public class TestWithAutofac
   }
 
   [Fact]
-  public async void TestMessageSendFromServerToClient()
+  public async Task TestMessageSendFromServerToClient()
   {
     CancellationTokenSource cts = new();
     try

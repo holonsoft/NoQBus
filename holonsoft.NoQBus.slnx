@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="holonsoft.NoQBus.Abstractions/holonsoft.NoQBus.Abstractions.csproj" />
+  <Project Path="holonsoft.NoQBus.SignalR.Abstractions/holonsoft.NoQBus.SignalR.Abstractions.csproj" />
+  <Project Path="holonsoft.NoQBus.SignalR.Client/holonsoft.NoQBus.SignalR.Client.csproj" />
+  <Project Path="holonsoft.NoQBus.SignalR.Host/holonsoft.NoQBus.SignalR.Host.csproj" />
+  <Project Path="holonsoft.NoQBus.Tests/holonsoft.NoQBus.Tests.csproj" />
+  <Project Path="holonsoft.NoQBus/holonsoft.NoQBus.csproj" />
+</Solution>

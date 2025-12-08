@@ -1,30 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Authors>Alexander Bülow, Christian Vogt</Authors>
+    <Authors>Christian Vogt, Alexander Hausen</Authors>
     <Company>holonsoft</Company>
     <PackageProjectUrl>https://www.nuget.org/packages/holonsoft.NoQBus/</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Copyright>holonsoft</Copyright>
     <Description>Asynchronous, fast and fully parallelized message bus.</Description>
     <RepositoryUrl>https://github.com/holonsoft/NoQBus</RepositoryUrl>
-    <Version>1.7.0</Version>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <Version>2.1.0</Version>
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <ImplicitUsings>enable</ImplicitUsings>
     <DebugType>Embedded</DebugType>
     <RepositoryType>GIT</RepositoryType>
     <PackageId>holonsoft.NoQBus</PackageId>
-    <PackageTags>holonsoft;noqbus;messagebus;net6</PackageTags>
+    <PackageTags>holonsoft;noqbus;messagebus;net8;net9;net10.0</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.3.0" />
-    <PackageReference Include="holonsoft.FluentConditions" Version="1.6.2" />
-    <PackageReference Include="holonsoft.Utils" Version="1.6.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="System.Text.Json" Version="6.0.2" />
+    <PackageReference Include="Autofac" Version="9.0.0" />
+    <PackageReference Include="holonsoft.FluentConditions" Version="3.0.1" />
+    <PackageReference Include="holonsoft.Utils" Version="1.10.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+    <PackageReference Include="System.Text.Json" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>

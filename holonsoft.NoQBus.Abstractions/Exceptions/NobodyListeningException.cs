@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace holonsoft.NoQBus.Abstractions.Exceptions;
+﻿namespace holonsoft.NoQBus.Abstractions.Exceptions;
 
 /// <summary>
 /// Thrown if no-one listens locally to a message request
@@ -20,7 +18,4 @@ public class NobodyListeningException : Exception
   {
   }
 
-  protected NobodyListeningException(SerializationInfo info, StreamingContext context) : base(info, context)
-  {
-  }
 }
